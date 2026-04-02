@@ -3,7 +3,9 @@
  * Purpose: Customer order history query/render + reorder action.
  * Main entry points: renderOrderHistory(), reorderFromHistory(), openStoreCatalogFromHistory().
  */
-// Ham getCurrentUserOrders: lay logic tuong ung.
+// Muc dich:
+// Lay danh sach don hang cua nguoi dung dang dang nhap (chi ap dung cho role customer).
+// Ham loc theo email/ten khach hang, sau do sap xep don moi nhat len truoc de hien thi lich su.
 function getCurrentUserOrders() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser || currentUser.role !== 'customer') return [];
@@ -21,7 +23,9 @@ function getCurrentUserOrders() {
         .sort((left, right) => new Date(right.createdAt) - new Date(left.createdAt));
 }
 
-// Ham formatOrderDate: dinh dang logic tuong ung.
+// Muc dich:
+// Chuan hoa cach hien thi thoi gian tao don hang.
+// Neu he thong da co helper formatDateTime thi uu tien dung lai; neu khong thi fallback ve toLocaleString.
 function formatOrderDate(value) {
     if (typeof formatDateTime === 'function') {
         return formatDateTime(value);
@@ -31,14 +35,18 @@ function formatOrderDate(value) {
     return Number.isNaN(date.getTime()) ? 'Chưa rõ thời gian' : date.toLocaleString('vi-VN');
 }
 
-// Ham buildOrderItemSummary: tao logic tuong ung.
+// Muc dich:
+// Tao chuoi tom tat cac san pham trong mot don hang theo dang "Ten xSoLuong".
+// Ket qua duoc dung de hien thi nhanh noi dung don tren card lich su.
 function buildOrderItemSummary(order) {
     return (order.items || [])
         .map(item => `${item.name} x${item.quantity}`)
         .join(', ');
 }
 
-// Ham buildOrderHistoryCard: tao logic tuong ung.
+// Muc dich:
+// Tao HTML cho 1 card lich su don hang, gom: ma don, thoi gian, trang thai, danh sach mon, tong tien va ghi chu.
+// Card cung gan nut "Mua lai san pham" de goi ham dat lai tu don cu.
 function buildOrderHistoryCard(order) {
     const isPending = order.status === 'Chờ duyệt';
 
@@ -63,7 +71,9 @@ function buildOrderHistoryCard(order) {
     `;
 }
 
-// Ham openStoreCatalogFromHistory: mo logic tuong ung.
+// Muc dich:
+// Dieu huong nguoi dung tu khu vuc lich su don hang ve lai trang danh muc mua sam.
+// Ham vua chuyen view "Home", vua cuon den section catalog de nguoi dung bat dau mua ngay.
 window.openStoreCatalogFromHistory = function() {
     const homeNav = document.querySelector('.customer-only .nav-item');
     if (homeNav) {
@@ -75,7 +85,9 @@ window.openStoreCatalogFromHistory = function() {
     }
 };
 
-// Ham reorderFromHistory: dat lai logic tuong ung.
+// Muc dich:
+// Ho tro mua lai: lay don cu theo orderId va thu them tung san pham vao gio hang hien tai.
+// Ham dem so mon them thanh cong/that bai, cap nhat lai gio hang + thong ke cua cua hang va hien toast ket qua.
 window.reorderFromHistory = function(orderId) {
     const orders = getCurrentUserOrders();
     const order = orders.find(item => item.id === orderId);
@@ -112,7 +124,11 @@ window.reorderFromHistory = function(orderId) {
     showToast(skippedCount > 0 ? 'Không thể mua lại vì một số sản phẩm đã hết hàng hoặc đã bị gỡ.' : 'Không tìm thấy món hàng để mua lại.');
 };
 
-// Ham renderOrderHistory: hien thi logic tuong ung.
+// Muc dich:
+// Render toan bo khu vuc lich su don hang cua khach hang:
+// - Tinh va cap nhat cac chi so tong quan (tong don, da hoan tat, cho duyet, tong chi tieu).
+// - Hien empty state neu chua co don.
+// - Hien danh sach card don hang neu du lieu ton tai.
 window.renderOrderHistory = function() {
     const summaryTotalEl = document.getElementById('orderHistoryTotalCount');
     const summaryDoneEl = document.getElementById('orderHistoryDoneCount');

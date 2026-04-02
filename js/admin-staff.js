@@ -5,7 +5,9 @@
  */
 const mockStaffSeedVersion = 'dngear-staff-seed-v1';
 
-// Ham buildMockStaff: tao logic tuong ung.
+// Muc dich:
+// Tao danh sach nhan su mau de khoi tao du lieu ban dau cho module quan ly nhan vien.
+// Du lieu nay duoc dung lam "seed" khi he thong chua co staffData hop le trong localStorage.
 function buildMockStaff() {
     return [
         { id: 'NV01', name: 'Triệu Anh Khôi', gender: 'Nam', phone: '0987654321', email: 'hai@jewerly.com', role: 'Quản lý kho', salary: '15.000.000 đ' },
@@ -15,7 +17,12 @@ function buildMockStaff() {
     ];
 }
 
-// Ham initMockStaff: khoi tao logic tuong ung.
+// Muc dich:
+// Khoi tao staffData trong localStorage theo co che seed version.
+// Ham xu ly 3 truong hop:
+// - Chua co du lieu: nap toan bo staff mau.
+// - Du lieu cu chi gom nhan su legacy: thay bang bo seed moi.
+// - Nang cap seed version: loai ban ghi legacy va bo sung nhan su moi neu thieu.
 function initMockStaff() {
     let staff = JSON.parse(localStorage.getItem('staffData')) || [];
     if (!Array.isArray(staff)) staff = [];
@@ -41,7 +48,9 @@ function initMockStaff() {
 }
 initMockStaff();
 
-// Ham injectStaffModal: chen logic tuong ung.
+// Muc dich:
+// Chen modal them/sua nhan su vao DOM mot lan duy nhat.
+// Ham tao toan bo form nhap lieu va cac nut thao tac (dong, huy, luu) de su dung lai trong module.
 function injectStaffModal() {
     if(document.getElementById('adminStaffFormModal')) return;
     const container = document.createElement('div');
@@ -104,7 +113,10 @@ function injectStaffModal() {
 }
 injectStaffModal();
 
-// Ham renderAdminStaff: hien thi logic tuong ung.
+// Muc dich:
+// Render bang danh sach nhan vien tu localStorage ra giao dien quan tri.
+// Ham ho tro loc theo tu khoa (ten, SDT, email, ma nhan vien), hien trang thai rong khi khong co ket qua,
+// va gan cac hanh dong Sua/Xoa tren tung dong du lieu.
 window.renderAdminStaff = function(keyword = '') {
     const staff = JSON.parse(localStorage.getItem('staffData')) || [];
 
@@ -146,12 +158,16 @@ window.renderAdminStaff = function(keyword = '') {
     });
 };
 
-// Ham searchAdminStaff: tim kiem logic tuong ung.
+// Muc dich:
+// Ham wrapper cho o tim kiem nhan vien.
+// Nhan keyword va goi lai renderAdminStaff de cap nhat bang theo bo loc hien tai.
 window.searchAdminStaff = function(keyword) {
     renderAdminStaff(keyword);
 };
 
-// Ham deleteStaff: xoa logic tuong ung.
+// Muc dich:
+// Xu ly xoa (sa thai) mot nhan vien khoi staffData.
+// Ham hien hop xac nhan, cho hieu ung dong bang, cap nhat localStorage, thong bao ket qua va render lai danh sach.
 window.deleteStaff = function(id, btnElement) {
     const confirmDelete = confirm('CẢNH BÁO: Xác nhận chấm dứt hợp đồng và xóa dữ liệu của nhân sự này?');
     if(confirmDelete) {
@@ -173,7 +189,9 @@ window.deleteStaff = function(id, btnElement) {
     }
 };
 
-// Ham openAddStaffForm: mo logic tuong ung.
+// Muc dich:
+// Mo form o che do "them moi" nhan su.
+// Ham reset toan bo truong nhap ve mac dinh, mo khoa truong ma nhan vien va hien modal.
 window.openAddStaffForm = function() {
     document.getElementById('adminStaffFormTitle').innerText = 'THÊM NHÂN SỰ MỚI';
     document.getElementById('formStaffSaveMode').value = 'add';
@@ -191,7 +209,9 @@ window.openAddStaffForm = function() {
     if(modal) modal.classList.remove('hide-menu');
 };
 
-// Ham editStaff: chinh sua logic tuong ung.
+// Muc dich:
+// Mo form o che do "chinh sua" cho mot nhan vien cu the theo id.
+// Ham nap du lieu hien tai vao form, khoa truong ma nhan vien de tranh doi khoa chinh, roi hien modal.
 window.editStaff = function(id) {
     let staff = JSON.parse(localStorage.getItem('staffData')) || [];
     const p = staff.find(item => item.id === id);
@@ -213,13 +233,18 @@ window.editStaff = function(id) {
     if(modal) modal.classList.remove('hide-menu');
 };
 
-// Ham closeStaffForm: dong logic tuong ung.
+// Muc dich:
+// Dong modal them/sua nhan su bang cach them class an.
+// Ham khong thay doi du lieu, chi tac dong trang thai hien thi cua UI.
 window.closeStaffForm = function() {
     const modal = document.getElementById('adminStaffFormModal');
     if(modal) modal.classList.add('hide-menu');
 };
 
-// Ham saveStaff: luu logic tuong ung.
+// Muc dich:
+// Luu du lieu tu form nhan su vao localStorage cho ca 2 che do: them moi va chinh sua.
+// Ham validate cac truong bat buoc, kiem tra trung ma khi them moi, cap nhat danh sach,
+// dong modal va render lai bang theo tu khoa tim kiem hien tai.
 
 window.saveStaff = function() {
     const mode = document.getElementById('formStaffSaveMode').value;

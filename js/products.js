@@ -96,36 +96,48 @@ storeCategoryGroups.trangsucnam = ['trangsucnam', 'nhannam', 'daychuyennam', 'la
 storeCategoryGroups.trangsuccuoi = ['trangsuccuoi', 'nhancuoi', 'nhancapdoi', 'quatang'];
 storeCategoryGroups.phukien = ['phukien', 'hoptrangsuc', 'khanlau'];
 
-// Ham getStoreCategoryMeta: lay logic tuong ung.
+// Muc dich:
+// Tra cuu metadata (ten hien thi, mo ta) cho mot nhom danh muc trong catalog.
+// Neu khong tim thay category hop le, ham fallback ve metadata cua nhom "all" de tranh vo giao dien.
 function getStoreCategoryMeta(category) {
     return storeCategoryMeta[category] || storeCategoryMeta.all;
 }
 
-// Ham getCurrentUserRole: lay logic tuong ung.
+// Muc dich:
+// Lay role cua nguoi dung hien tai de dieu chinh hanh vi giao dien cua trang san pham.
+// Neu chua dang nhap thi tra ve "guest" de cac ham khac co the xu ly an toan.
 function getCurrentUserRole() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     return currentUser ? currentUser.role : 'guest';
 }
 
-// Ham formatStorePrice: dinh dang logic tuong ung.
+// Muc dich:
+// Dinh dang gia tri tien te theo chuan hien thi vi-VN trong khu vuc catalog.
+// No dam bao moi muc gia deu duoc dua ve mot format thong nhat truoc khi render.
 function formatStorePrice(value) {
     return `${Number(value || 0).toLocaleString('vi-VN')}$`;
 }
 
-// Ham getStockPresentation: lay logic tuong ung.
+// Muc dich:
+// Chuyen so luong ton kho thanh trang thai hien thi cho UI (label + className).
+// Giup card san pham hien dung thong diep: het hang, sap het hoac san kho.
 function getStockPresentation(stock) {
     if (stock <= 0) return { label: 'Het hang', className: 'out' };
     if (stock < 5) return { label: `Con ${stock}`, className: 'low' };
     return { label: 'San kho', className: 'ready' };
 }
 
-// Ham getCategoryKeys: lay logic tuong ung.
+// Muc dich:
+// Mo rong category chinh thanh tap cac key con de phuc vu loc san pham theo nhom.
+// Neu category khong co group thi tra ve chinh no de bo loc van hoat dong.
 function getCategoryKeys(category) {
     if (storeCategoryGroups[category]) return storeCategoryGroups[category];
     return [category];
 }
 
-// Ham matchesStoreCategory: kiem tra khop logic tuong ung.
+// Muc dich:
+// Kiem tra mot san pham co thuoc nhom category dang chon hay khong.
+// No so sanh voi ca category va subcategory de ket qua loc linh hoat hon.
 function matchesStoreCategory(product, category) {
     if (category === 'all') return true;
 
@@ -133,7 +145,9 @@ function matchesStoreCategory(product, category) {
     return categoryKeys.includes(product.category) || categoryKeys.includes(product.subcategory);
 }
 
-// Ham buildProductSearchText: tao logic tuong ung.
+// Muc dich:
+// Tong hop cac truong tim kiem cua san pham thanh mot chuoi duy nhat de full-text search.
+// Chuoi nay gom id, ten, collection, tagline, thuoc tinh ky thuat va searchTags de nang do phu ket qua.
 function buildProductSearchText(product) {
     const categoryMeta = getStoreCategoryMeta(product.subcategory || product.category);
     return [
@@ -152,13 +166,17 @@ function buildProductSearchText(product) {
         .toLowerCase();
 }
 
-// Ham matchesStoreSearch: kiem tra khop logic tuong ung.
+// Muc dich:
+// Kiem tra san pham co khop voi tu khoa tim kiem hien tai hay khong.
+// Neu khong co keyword thi mac dinh tra ve true de khong vo tinh an danh sach.
 function matchesStoreSearch(product, keyword) {
     if (!keyword) return true;
     return buildProductSearchText(product).includes(keyword);
 }
 
-// Ham sortStoreProducts: sap xep logic tuong ung.
+// Muc dich:
+// Sap xep danh sach san pham theo tieu chi dang chon (gia, sale, ton kho, noi bat).
+// No tra ve ban sao da sap xep de tranh thay doi truc tiep du lieu nguon.
 function sortStoreProducts(products) {
     const sorted = [...products];
 
@@ -189,7 +207,9 @@ function sortStoreProducts(products) {
     });
 }
 
-// Ham syncDropdownSelectedText: dong bo logic tuong ung.
+// Muc dich:
+// Dong bo text hien thi trong dropdown danh muc voi category dang duoc ap dung.
+// Giup nguoi dung nhin thay bo loc hien tai mot cach ro rang.
 function syncDropdownSelectedText() {
     const textEl = document.getElementById('dropdownSelectedText');
     if (!textEl) return;
@@ -197,7 +217,9 @@ function syncDropdownSelectedText() {
     textEl.innerText = getStoreCategoryMeta(currentStoreCategory).label;
 }
 
-// Ham updateCatalogResultCopy: cap nhat logic tuong ung.
+// Muc dich:
+// Cap nhat cau thong bao so luong ket qua catalog theo bo loc hien tai.
+// Noi dung thong diep thay doi theo trang thai co/khong co tim kiem keyword.
 function updateCatalogResultCopy(totalItems) {
     const countEl = document.getElementById('storeCatalogResultCount');
     if (!countEl) return;
@@ -207,7 +229,9 @@ function updateCatalogResultCopy(totalItems) {
     countEl.innerText = `${prefix} sản phẩm trong nhóm ${categoryMeta.label.toLowerCase()}.`;
 }
 
-// Ham buildCatalogEmptyState: tao logic tuong ung.
+// Muc dich:
+// Tao HTML empty state khi catalog khong co san pham phu hop dieu kien loc/tim.
+// Card rong cung cap hanh dong nhanh de reset danh muc hoac xoa tu khoa tim kiem.
 function buildCatalogEmptyState() {
     const categoryMeta = getStoreCategoryMeta(currentStoreCategory);
     const searchNote = currentStoreSearch
@@ -226,7 +250,9 @@ function buildCatalogEmptyState() {
     `;
 }
 
-// Ham buildStoreProductCard: tao logic tuong ung.
+// Muc dich:
+// Tao markup card san pham de hien thi trong danh sach catalog/home.
+// No xu ly gia sau giam gia, fallback hinh anh va nut mo chi tiet san pham.
 function buildStoreProductCard(product, options = {}) {
     const salePercent = Number(options.salePercent ?? product.salePercent ?? 0) || 0;
     const displayPrice = salePercent > 0 ? Math.round(product.price * (100 - salePercent) / 100) : product.price;
@@ -254,7 +280,9 @@ function buildStoreProductCard(product, options = {}) {
 window.createStoreProductCard = buildStoreProductCard;
 
 // Category shortcut buttons on home call this to jump + re-render catalog.
-// Ham focusStoreCategory: tap trung logic tuong ung.
+// Muc dich:
+// Cho phep nut shortcut tren trang chu chuyen nhanh den mot nhom category cu the.
+// No doi category hien tai, render lai catalog va cuon den section danh sach san pham.
 window.focusStoreCategory = function(category) {
     currentStoreCategory = category || 'all';
     syncDropdownSelectedText();
@@ -266,7 +294,9 @@ window.focusStoreCategory = function(category) {
     }
 };
 
-// Ham scrollStoreSection: cuon logic tuong ung.
+// Muc dich:
+// Cuon trang den mot section theo id voi hieu ung smooth.
+// Duoc dung de dieu huong nguoi dung den dung khu vuc can tap trung.
 window.scrollStoreSection = function(id) {
     const section = document.getElementById(id);
     if (section) {
@@ -275,7 +305,9 @@ window.scrollStoreSection = function(id) {
 };
 
 // Home section: sale cards.
-// Ham renderSaleProducts: hien thi logic tuong ung.
+// Muc dich:
+// Render block san pham khuyen mai tren trang chu.
+// No uu tien san pham co salePercent cao; neu khong co deal se fallback hien thi san pham gia cao.
 window.renderSaleProducts = function() {
     const container = document.getElementById('saleProductsGrid');
     if (!container) return;
@@ -298,7 +330,9 @@ window.renderSaleProducts = function() {
 };
 
 // Home section: promotion strip cards.
-// Ham renderStorePromoStrip: hien thi logic tuong ung.
+// Muc dich:
+// Render day card uu dai (voucher da cap + chuong trinh khuyen mai dang ap dung).
+// No uu tien voucher ca nhan cua user, sau do bo sung promotion chung de day du so luong card.
 window.renderStorePromoStrip = function() {
     const container = document.getElementById('storePromoStrip');
     if (!container) return;
@@ -338,7 +372,9 @@ window.renderStorePromoStrip = function() {
 };
 
 // Home section: KPI counters for customer storefront.
-// Ham renderStoreInsights: hien thi logic tuong ung.
+// Muc dich:
+// Cap nhat cac KPI nho tren storefront: tong san pham, hot deal, so mon trong gio va don cho duyet.
+// Du lieu duoc dong bo len nhieu vi tri UI (section, navbar, header) de thong tin nhat quan.
 window.renderStoreInsights = function() {
     const totalEl = document.getElementById('storeTotalCatalogCount');
     const dealEl = document.getElementById('storeHotDealCount');
@@ -375,7 +411,9 @@ window.renderStoreInsights = function() {
     if (pendingNavEl) pendingNavEl.innerText = pendingCount;
 }
 
-// Ham searchProducts: tim kiem logic tuong ung.
+// Muc dich:
+// Xu ly tim kiem san pham theo keyword trong catalog.
+// No luu keyword hien tai, dong bo gia tri cho cac o tim kiem lien quan va render lai danh sach.
 function searchProducts(keyword) {
     currentStoreSearch = String(keyword || '').trim().toLowerCase();
     const input = document.getElementById('storeSearchInput');
@@ -392,7 +430,9 @@ function searchProducts(keyword) {
 window.searchProducts = searchProducts;
 
 // Main catalog renderer: filters by category + keyword, then paints product cards.
-// Ham renderProducts: hien thi logic tuong ung.
+// Muc dich:
+// No render chinh cua catalog: loc theo category + keyword, sap xep va ve danh sach card san pham.
+// Dong thoi cap nhat thong diep ket qua va hien empty state neu khong co du lieu phu hop.
 function renderProducts(category = currentStoreCategory) {
     currentStoreCategory = category || 'all';
 
@@ -419,7 +459,9 @@ function renderProducts(category = currentStoreCategory) {
 window.renderProducts = renderProducts;
 
 // Product detail modal state fill + media fallback handling.
-// Ham showDetail: hien thi logic tuong ung.
+// Muc dich:
+// Mo modal chi tiet san pham va nap day du du lieu cua san pham duoc chon vao UI.
+// No cung dieu chinh cac nut hanh dong theo role (customer/admin) va xu ly fallback hinh anh.
 function showDetail(id) {
     const product = dbProducts.find(item => item.id === id);
     if (!product) return;
@@ -525,7 +567,9 @@ function showDetail(id) {
 
 window.showDetail = showDetail;
 
-// Ham closeModal: dong logic tuong ung.
+// Muc dich:
+// Dong modal chi tiet san pham va xoa trang thai san pham dang chon.
+// Giup luong tuong tac quay ve trang thai catalog thong thuong.
 function closeModal() {
     const modal = document.getElementById('detailModal');
     if (modal) modal.classList.add('hide-menu');
@@ -534,7 +578,9 @@ function closeModal() {
 
 window.closeModal = closeModal;
 
-// Ham changeQty: thay doi logic tuong ung.
+// Muc dich:
+// Tang/giam so luong mua trong modal chi tiet theo buoc duong/?m.
+// No gioi han min/max theo ton kho de tranh dat vuot qua so luong co the mua.
 function changeQty(amount) {
     const qtyInput = document.getElementById('buyQty');
     if (!qtyInput || !currentSelectedProduct) return;
@@ -552,7 +598,9 @@ function changeQty(amount) {
 
 window.changeQty = changeQty;
 
-// Ham toggleDropdown: bat/tat logic tuong ung.
+// Muc dich:
+// Bat/tat menu dropdown chon danh muc trong catalog.
+// No chi can doi class "show" de dieu khien trang thai mo/dong cua menu.
 function toggleDropdown() {
     const menu = document.getElementById('dropdownMenu');
     if (menu) menu.classList.toggle('show');
@@ -560,6 +608,9 @@ function toggleDropdown() {
 
 window.toggleDropdown = toggleDropdown;
 
+// Muc dich:
+// Tu dong dong dropdown danh muc neu nguoi dung click ra ngoai khu vuc dropdown.
+// Giup han che trang thai menu bi mo treo khi dieu huong tren trang.
 window.addEventListener('click', event => {
     const dropdown = document.getElementById('customCategoryDropdown');
     const menu = document.getElementById('dropdownMenu');
@@ -568,7 +619,9 @@ window.addEventListener('click', event => {
     }
 });
 
-// Ham selectCategory: chon logic tuong ung.
+// Muc dich:
+// Xu ly khi nguoi dung chon mot danh muc trong dropdown loc catalog.
+// No cap nhat category hien tai, doi label dropdown, dong menu va render lai danh sach san pham.
 function selectCategory(categoryValue, displayText, event) {
     if (event) {
         event.stopPropagation();

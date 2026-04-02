@@ -3,7 +3,9 @@
  * Purpose: Global UI helpers (toast, sidebar, view switch, inbox widget).
  * Main entry points: renderSidebar(), switchMenu(), openInbox(), closeInbox().
  */
-// Ham showToast: hien thi logic tuong ung.
+// Muc dich:
+// Hien thi thong bao ngan (toast) de phan hoi nhanh cho nguoi dung.
+// Neu chua co vung chua toast thi tao moi, sau do tu dong an thong bao sau mot khoang thoi gian.
 function showToast(message) {
     let container = document.querySelector('.toast-container');
     if (!container) {
@@ -23,8 +25,9 @@ function showToast(message) {
     }, 2600);
 }
 
-// Core view router: switch visible section and optionally call a renderer.
-// Ham switchMenu: chuyen doi logic tuong ung.
+// Muc dich:
+// Dieu huong giua cac man hinh chinh trong trang (cac view co id bat dau bang "view-").
+// Ham nay dong vai tro router UI: doi tab active, an/hien view va goi ham render tuong ung neu duoc truyen vao.
 function switchMenu(element, viewId, renderFuncName) {
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     if (element) element.classList.add('active');
@@ -46,8 +49,13 @@ function switchMenu(element, viewId, renderFuncName) {
     }
 }
 
-// Render sidebar menu by current role, then sync quick counters.
-// Ham renderSidebar: hien thi logic tuong ung.
+// Muc dich:
+// Khoi tao va cap nhat khu vuc sidebar theo nguoi dung dang dang nhap.
+// Ham tu dong:
+// - Hien thi thong tin co ban (ten, ky tu avatar, vai tro).
+// - Bat/tat nhom menu admin/customer theo role.
+// - Tinh toan cac chi so tong quan cho admin.
+// - Goi cac ham dong bo du lieu lien quan den khach hang (gio hang, uu dai, lich su...).
 function renderSidebar() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) {
@@ -112,7 +120,9 @@ function renderSidebar() {
     }
 }
 
-// Ham updateInboxCounter: cap nhat logic tuong ung.
+// Muc dich:
+// Cap nhat huy hieu so thong bao chua doc tren menu "Hop thu".
+// Ham chi dem thong bao cua dung tai khoan hien tai, sau do an/hien badge tuy theo ket qua.
 function updateInboxCounter() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) return;
@@ -130,21 +140,27 @@ function updateInboxCounter() {
     }
 }
 
-// Ham openInbox: mo logic tuong ung.
+// Muc dich:
+// Mo modal hop thu va render lai danh sach thong bao truoc khi hien thi.
+// Dam bao nguoi dung nhin thay noi dung moi nhat moi lan mo hop thu.
 function openInbox() {
     renderInbox();
     const modal = document.getElementById('inboxModal');
     if (modal) modal.classList.remove('hide-menu');
 }
 
-// Ham closeInbox: dong logic tuong ung.
+// Muc dich:
+// Dong modal hop thu bang cach them lai class an modal.
+// Ham nay chi xu ly dong modal, khong thay doi du lieu thong bao.
 function closeInbox() {
     const modal = document.getElementById('inboxModal');
     if (modal) modal.classList.add('hide-menu');
 }
 
-// Build inbox items from localStorage and paint unread badges.
-// Ham renderInbox: hien thi logic tuong ung.
+// Muc dich:
+// Tai thong bao tu localStorage, loc theo nguoi dung hien tai, sap xep moi nhat -> cu nhat,
+// sau do render danh sach vao giao dien hop thu.
+// Neu khong co thong bao thi hien trang thai "rong". Cuoi cung cap nhat lai bo dem chua doc.
 function renderInbox() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) return;
@@ -185,7 +201,9 @@ function renderInbox() {
     updateInboxCounter();
 }
 
-// Ham markAsRead: danh dau logic tuong ung.
+// Muc dich:
+// Danh dau mot thong bao la da doc khi nguoi dung click vao item trong hop thu.
+// Sau khi cap nhat localStorage, ham goi render lai de dong bo ngay giao dien va bo dem.
 function markAsRead(id) {
     let notifications = JSON.parse(localStorage.getItem('notificationData')) || [];
     const idx = notifications.findIndex(n => n.id === id);
@@ -202,5 +220,7 @@ window.renderInbox = renderInbox;
 window.markAsRead = markAsRead;
 window.updateInboxCounter = updateInboxCounter;
 
-// Ham openPersonalInfo: mo logic tuong ung.
+// Muc dich:
+// Ham placeholder cho thao tac mo thong tin ca nhan.
+// Hien tai de trong de du phong cho viec mo rong tinh nang trong tuong lai.
 function openPersonalInfo() {}

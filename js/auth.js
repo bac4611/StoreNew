@@ -3,7 +3,9 @@
  * Purpose: Login/register/forgot password flows and auth page state toggles.
  * Main entry points: login(), register(), handleForgotPass(), logout().
  */
-// Ham toggleForm: bat/tat logic tuong ung.
+// Muc dich:
+// Chuyen doi giua cac form xac thuc (dang nhap, dang ky, quen mat khau) tren cung mot trang.
+// Ham se an tat ca form, hien form muc tieu, dong ket qua cu cua quen mat khau va hien thong diep huong dan mac dinh.
 function toggleForm(targetFormId) {
     const allForms = document.querySelectorAll('.auth-form-container');
     allForms.forEach(form => {
@@ -21,7 +23,9 @@ function toggleForm(targetFormId) {
     showAuthMessage('Điền thông tin phù hợp để tiếp tục thao tác.', 'info');
 }
 
-// Ham showAuthMessage: hien thi logic tuong ung.
+// Muc dich:
+// Hien thi thong bao phan hoi cho nguoi dung trong khu vuc auth (info/success/error).
+// Neu khong tim thay vung hien thi, ham fallback bang alert de dam bao thong diep van duoc gui den nguoi dung.
 function showAuthMessage(message, type = 'info') {
     const feedback = document.getElementById('authFeedback');
     if (!feedback) {
@@ -41,7 +45,13 @@ function showAuthMessage(message, type = 'info') {
     }
 }
 
-// Ham login: xu ly dang nhap logic tuong ung.
+// Muc dich:
+// Xu ly su kien dang nhap, xac thuc tai khoan va tao phien dang nhap bang localStorage.
+// Ham ho tro:
+// - Tai khoan admin hard-code de truy cap nhanh trang quan tri.
+// - Dang nhap user thuong theo users trong localStorage.
+// - Chan dang nhap neu tai khoan bi khoa.
+// Sau khi thanh cong, chuyen huong sang index.html.
 function login(event) {
     if(event) event.preventDefault();
 
@@ -78,7 +88,10 @@ function login(event) {
     return false;
 }
 
-// Ham register: xu ly dang ky logic tuong ung.
+// Muc dich:
+// Tao tai khoan moi cho khach hang va luu vao localStorage.
+// Ham kiem tra du lieu bat buoc, tranh trung ten/email, khoi tao thong tin mac dinh
+// (role, spent, status), sau do chuyen ve form dang nhap va bao ket qua thanh cong.
 function register(event) {
     if(event) event.preventDefault();
 
@@ -98,8 +111,7 @@ function register(event) {
     }
 
     let users = JSON.parse(localStorage.getItem('users')) || [];
-    
-    // Check trùng lặp Tên hiển thị (username/name) hoặc Email
+    // Kiem tra trung lap ten hien thi hoac email.
     const exist = users.find(u => u.email === email || u.name === name || u.username === name);
     if(exist) {
         showAuthMessage('Tên hiển thị hoặc Email này đã tồn tại trên hệ thống.', 'error');
@@ -125,7 +137,9 @@ function register(event) {
     return false;
 }
 
-// Ham handleForgotPass: xu ly logic tuong ung.
+// Muc dich:
+// Ho tro luong "quen mat khau" bang cach tim user theo email va hien mat khau da luu.
+// Neu tim thay, mo hop ket qua de nguoi dung xem; neu khong tim thay thi an hop ket qua va bao loi.
 function handleForgotPass(event) {
     if(event) event.preventDefault();
     
@@ -153,7 +167,9 @@ function handleForgotPass(event) {
     return false;
 }
 
-// Ham logout: xu ly dang xuat logic tuong ung.
+// Muc dich:
+// Ket thuc phien dang nhap hien tai bang cach xoa currentUser khoi localStorage,
+// sau do dieu huong nguoi dung ve trang home.html.
 function logout() {
     localStorage.removeItem('currentUser');
     window.location.href = 'home.html';
