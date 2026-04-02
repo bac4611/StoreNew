@@ -1,0 +1,909 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACDUNG-JEWERRY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/store-home.css">
+    <link rel="stylesheet" href="../css/admin-features.css">
+    <link rel="stylesheet" href="../css/admin-reports.css">
+    <link rel="stylesheet" href="../css/admin-views.css">
+    <link rel="stylesheet" href="../css/admin-crud.css">
+    <link rel="stylesheet" href="../css/admin-customers.css">
+    <link rel="stylesheet" href="../css/admin-staff.css">
+    <link rel="stylesheet" href="../css/index-square.css?v=20260327">
+</head>
+
+<body class="brand-background index-square-ui">
+    <nav class="sidebar">
+        <div class="user-profile-box">
+            <div class="avatar-pill user-avatar-char">A</div>
+            <div class="user-info">
+                <h4 class="user-display-name">Xin chào, ...</h4>
+                <span class="user-role-label">Đang tải...</span>
+            </div>
+        </div>
+
+        <div class="nav-group admin-only hide-menu">
+            <div class="nav-title">Quản lý</div>
+            <a href="javascript:void(0)" class="nav-item active" onclick="switchMenu(this, 'view-home')"><i
+                    class="fa-solid fa-house"></i> Trang chủ</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-products', 'renderAdminProductTable')"><i
+                    class="fa-solid fa-box"></i> Sản phẩm</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-customers', 'renderAdminCustomers')"><i
+                    class="fa-solid fa-users"></i> Khách hàng</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-staff', 'renderAdminStaff')"><i class="fa-solid fa-user-tie"></i>
+                Nhân viên</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-suppliers', 'renderAdminSuppliers')"><i
+                    class="fa-solid fa-truck"></i> Nhà cung cấp</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-promotions', 'renderAdminPromotions')"><i
+                    class="fa-solid fa-tags"></i> Khuyến mãi</a>
+        </div>
+
+        <div class="nav-group admin-only hide-menu">
+            <div class="nav-title">Báo cáo</div>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-transactions', 'renderAdminTransactionsReport')"><i
+                    class="fa-solid fa-file-invoice-dollar"></i> Hoá đơn giao dịch</a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-admin-revenue', 'renderAdminRevenueReport')"><i
+                    class="fa-solid fa-chart-line"></i> Thống kê Doanh thu</a>
+        </div>
+
+        <div class="nav-group customer-only hide-menu">
+            <div class="nav-title">Bán hàng</div>
+            <a href="javascript:void(0)" class="nav-item active" onclick="switchMenu(this, 'view-home')"><i
+                    class="fa-solid fa-gem"></i> Sản phẩm hiện có</a>
+            <a href="javascript:void(0)" class="nav-item" onclick="openCart()"><i class="fa-solid fa-cart-shopping"></i>
+                Đơn hàng của tôi <span class="nav-item-badge" id="cartNavCount">0</span></a>
+            <a href="javascript:void(0)" class="nav-item"
+                onclick="switchMenu(this, 'view-order-history', 'renderOrderHistory')"><i
+                    class="fa-solid fa-list-check"></i> Lịch sử mua hàng <span class="nav-item-badge secondary"
+                    id="orderPendingCount">0</span></a>
+            <a href="javascript:void(0)" class="nav-item" onclick="openInbox()"><i class="fa-solid fa-envelope"></i> Hòm
+                thư <span class="nav-item-badge hide-menu" id="inboxNavCount"
+                    style="background: rgb(239, 68, 68); color: white;">0</span></a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">Hệ thống</div>
+            <a href="javascript:void(0)" class="nav-item" id="personalInfoNavItem"
+                onclick="switchMenu(this, 'view-personal-info', 'renderPersonalInfo')"><i
+                    class="fa-solid fa-user-gear"></i> Thông tin cá nhân</a>
+            <a href="javascript:void(0)" class="nav-item" style="color: rgb(239, 68, 68);" onclick="logout()"><i
+                    class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+        </div>
+    </nav>
+
+    <!-- Main app shell: home storefront + all admin/customer view sections live below. -->
+    <main class="main-content">
+
+        <div id="view-home" class="view-section">
+            <div class="customer-home">
+                <header class="storefront-header-shell customer-only">
+                    <div class="storefront-header-top">
+                        <div class="storefront-header-left">
+                            <button type="button" class="storefront-icon-btn" onclick="showToast('Showroom BACDUNG đang hỗ trợ tư vấn online toàn quốc.')">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </button>
+
+                            <label class="storefront-searchbox">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="storeHeaderSearchInput" placeholder="Tìm kiếm" oninput="searchProducts(this.value)">
+                            </label>
+                        </div>
+
+                        <a href="javascript:void(0)" class="storefront-branding" onclick="switchMenu(document.querySelector('.nav-item.active'), 'view-home')">
+                            <img src="../images/logo.png" alt="BACDUNG JEWERRY" class="storefront-brand-logo">
+                        </a>
+
+                        <div class="storefront-header-actions">
+                            <button type="button" class="storefront-icon-btn" onclick="scrollStoreSection('storeFeaturedSection')">
+                                <i class="fa-solid fa-heart"></i>
+                                <span class="storefront-count">0</span>
+                            </button>
+                            <button type="button" class="storefront-icon-btn" onclick="openCart()">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span class="storefront-count" id="storeHeaderCartCount">0</span>
+                            </button>
+                            <button type="button" class="storefront-icon-btn" onclick="switchMenu(document.getElementById('personalInfoNavItem'), 'view-personal-info', 'renderPersonalInfo')">
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="storefront-category-bar">
+                        <button type="button" class="storefront-category-link" onclick="scrollStoreSection('storeAboutSection')">Về chúng tôi</button>
+                        <button type="button" class="storefront-category-link has-caret" onclick="scrollStoreSection('storeFeaturedSection')">Bộ sưu tập <i class="fa-solid fa-caret-down"></i></button>
+                        <button type="button" class="storefront-category-link has-caret" onclick="scrollStoreSection('storeProductCatalog')">Sản phẩm <i class="fa-solid fa-caret-down"></i></button>
+                        <button type="button" class="storefront-category-link has-caret" onclick="scrollStoreSection('storePromoStrip')">Tin tức <i class="fa-solid fa-caret-down"></i></button>
+                        <button type="button" class="storefront-category-link has-caret" onclick="scrollStoreSection('storeServiceSection')">Dịch vụ <i class="fa-solid fa-caret-down"></i></button>
+                        <button type="button" class="storefront-category-link" onclick="window.location.href='gold-price.html'">Giá vàng hôm nay</button>
+                    </div>
+                </header>
+
+                <div class="top-hero-banner" style="margin-bottom: 24px;">
+                    <img src="../images/banner.png" alt="Banner trang chủ"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                <div class="hero-grid" id="storeAboutSection" style="margin-bottom: 10px;">
+                    <div class="hero-left">
+                        <img src="../images/banner4.png" alt="Bộ sưu tập nổi bật"
+                            class="hero-image">
+                    </div>
+                    <div class="hero-right">
+                        <div class="video-wrapper">
+                            <img src="../images/e07ebe32-12c7-4a94-9141-2608ebd8e662.png" alt="Nhẫn cao cấp"
+                                class="hero-image">
+                        </div>
+                        <div class="video-wrapper">
+                            <img src="../images/4a5f9ddd-9e6e-477f-8040-6bc3a660b08c.png" alt="Dây chuyền sang trọng"
+                                class="hero-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                <div class="shop-promo-strip customer-only" id="storePromoStrip"></div>
+
+                <div class="shop-category-grid">
+                    <button class="shop-category-card" onclick="focusStoreCategory('nhan')">
+                        <i class="fa-solid fa-ring"></i>
+                        <strong>Nhẫn</strong>
+                        <span>Nhẫn bạc, vàng và moissanite</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('daychuyen')">
+                        <i class="fa-solid fa-gem"></i>
+                        <strong>Dây chuyền</strong>
+                        <span>Thiết kế tinh tế, sang trọng</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('lactay')">
+                        <i class="fa-solid fa-link"></i>
+                        <strong>Lắc tay</strong>
+                        <span>Nhẹ nhàng, nữ tính, dễ phối</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('bongtai')">
+                        <i class="fa-solid fa-circle-dot"></i>
+                        <strong>Bông tai</strong>
+                        <span>Đa dạng kiểu dáng hiện đại</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('matday')">
+                        <i class="fa-solid fa-diamond"></i>
+                        <strong>Mặt dây</strong>
+                        <span>Điểm nhấn thanh lịch nổi bật</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('trangsucnam')">
+                        <i class="fa-solid fa-user"></i>
+                        <strong>Trang sức nam</strong>
+                        <span>Tối giản, mạnh mẽ, sang trọng</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('trangsuccuoi')">
+                        <i class="fa-solid fa-heart"></i>
+                        <strong>Trang sức cưới</strong>
+                        <span>Quà tặng và nhẫn ý nghĩa</span>
+                    </button>
+                    <button class="shop-category-card" onclick="focusStoreCategory('phukien')">
+                        <i class="fa-solid fa-gift"></i>
+                        <strong>Phụ kiện</strong>
+                        <span>Hộp quà, khăn lau, bảo quản</span>
+                    </button>
+                </div>
+
+                <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                <div class="shop-benefit-grid" id="storeServiceSection">
+                    <div class="shop-benefit-card">
+                        <i class="fa-solid fa-gem"></i>
+                        <div>
+                            <strong>Tận tâm</strong>
+                            <span>Tư vấn phong cách phù hợp và ý nghĩa từng món trang sức</span>
+                        </div>
+                    </div>
+                    <div class="shop-benefit-card">
+                        <i class="fa-solid fa-award"></i>
+                        <div>
+                            <strong>Uy tín</strong>
+                            <span>Cam kết chất liệu rõ ràng, nguồn gốc minh bạch</span>
+                        </div>
+                    </div>
+                    <div class="shop-benefit-card">
+                        <i class="fa-solid fa-ring"></i>
+                        <div>
+                            <strong>Chất lượng</strong>
+                            <span>Thiết kế tinh xảo, hoàn thiện cao cấp</span>
+                        </div>
+                    </div>
+                    <div class="shop-benefit-card">
+                        <i class="fa-solid fa-gift"></i>
+                        <div>
+                            <strong>Dịch vụ</strong>
+                            <span>Hỗ trợ gói quà và chăm sóc khách hàng chu đáo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                <div class="shop-section-head" id="storeFeaturedSection">
+                    <div>
+                        <h2 class="shop-section-title">Best Sellers</h2>
+                    </div>
+                    <a href="javascript:void(0)" class="shop-inline-link" onclick="focusStoreCategory('all')">Xem toàn
+                        bộ sản phẩm</a>
+                </div>
+                <div class="top-selling-grid store-grid"></div>
+
+                <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                <div id="storeProductCatalog" class="shop-catalog-panel">
+                    <div class="shop-catalog-toolbar">
+                        <div>
+                            <p class="shop-eyebrow">cửa hàng</p>
+                            <h2 class="shop-section-title">Khám phá toàn bộ sản phẩm</h2>
+                            <span class="shop-result-note" id="storeCatalogResultCount">Đang hiển thị 0 sản phẩm trong
+                                nhóm tất cả danh mục.</span>
+                        </div>
+
+                        <div class="shop-catalog-controls" style="flex: 1; justify-content: flex-end;">
+                            <div class="custom-category-dropdown" id="customCategoryDropdown">
+                                <div class="dropdown-trigger" onclick="toggleDropdown()">
+                                    <span id="dropdownSelectedText">Tất cả danh mục</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <ul class="dropdown-menu" id="dropdownMenu">
+                                    <li onclick="selectCategory('all', 'Tất cả danh mục')">Tất cả danh mục</li>
+
+                                    <li class="has-submenu">
+                                        <div class="menu-item-content" onclick="selectCategory('nhan', 'Nhẫn')">
+                                            Nhẫn <i class="fa-solid fa-caret-right"></i>
+                                        </div>
+                                        <ul class="submenu">
+                                            <li onclick="selectCategory('nhanbac', 'Nhẫn bạc', event)">
+                                                Nhẫn bạc</li>
+                                            <li onclick="selectCategory('nhanvang', 'Nhẫn vàng', event)">
+                                                Nhẫn vàng</li>
+                                            <li onclick="selectCategory('nhanmoissanite', 'Nhẫn moissanite', event)">
+                                                Nhẫn moissanite</li>
+                                            <li onclick="selectCategory('nhandaquy', 'Nhẫn đá quý', event)">
+                                                Nhẫn đá quý</li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <div class="menu-item-content"
+                                            onclick="selectCategory('daychuyen', 'Dây chuyền')">
+                                            Dây chuyền <i class="fa-solid fa-caret-right"></i>
+                                        </div>
+                                        <ul class="submenu">
+                                            <li onclick="selectCategory('daychuyenbac', 'Dây chuyền bạc', event)">
+                                                Dây chuyền bạc</li>
+                                            <li onclick="selectCategory('daychuyenvang', 'Dây chuyền vàng', event)">
+                                                Dây chuyền vàng</li>
+                                            <li onclick="selectCategory('matday', 'Mặt dây chuyền', event)">
+                                                Mặt dây chuyền</li>
+                                        </ul>
+                                    </li>
+
+                                    <li onclick="selectCategory('lactay', 'Lắc tay')">Lắc tay</li>
+
+                                    <li class="has-submenu">
+                                        <div class="menu-item-content" onclick="selectCategory('bongtai', 'Bông tai')">
+                                            Bông tai <i class="fa-solid fa-caret-right"></i>
+                                        </div>
+                                        <ul class="submenu">
+                                            <li onclick="selectCategory('bongtai-dinhda', 'Bông tai đính đá', event)">
+                                                Đính đá
+                                            </li>
+                                            <li
+                                                onclick="selectCategory('bongtai-ngoctrai', 'Bông tai ngọc trai', event)">
+                                                Ngọc trai
+                                            </li>
+                                            <li onclick="selectCategory('bongtai-toigian', 'Bông tai tối giản', event)">
+                                                Tối giản
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <div class="menu-item-content"
+                                            onclick="selectCategory('trangsucnam', 'Trang sức nam')">
+                                            Trang sức nam <i class="fa-solid fa-caret-right"></i>
+                                        </div>
+                                        <ul class="submenu">
+                                            <li onclick="selectCategory('nhannam', 'Nhẫn nam', event)">Nhẫn nam</li>
+                                            <li onclick="selectCategory('daychuyennam', 'Dây chuyền nam', event)">Dây
+                                                chuyền nam</li>
+                                            <li onclick="selectCategory('lactaynam', 'Lắc tay nam', event)">Lắc tay nam
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <div class="menu-item-content"
+                                            onclick="selectCategory('trangsuccuoi', 'Trang sức cưới')">
+                                            Trang sức cưới <i class="fa-solid fa-caret-right"></i>
+                                        </div>
+                                        <ul class="submenu">
+                                            <li onclick="selectCategory('nhancuoi', 'Nhẫn cưới', event)">Nhẫn cưới</li>
+                                            <li onclick="selectCategory('nhancapdoi', 'Nhẫn cặp đôi', event)">Nhẫn cặp
+                                                đôi</li>
+                                            <li onclick="selectCategory('quatang', 'Quà tặng kỷ niệm', event)">Quà tặng
+                                                kỷ niệm</li>
+                                        </ul>
+                                    </li>
+
+                                    <li onclick="selectCategory('lactay', 'Lắc tay')">Lắc tay</li>
+                                    <li onclick="selectCategory('daychuyen', 'Dây chuyền')">Dây chuyền</li>
+                                    <li onclick="selectCategory('phukien', 'Phụ kiện')">Phụ kiện</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="product-grid display-products"></div>
+                    </div>
+
+                    <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                    <div class="shop-trust-panels">
+                        <div class="shop-trust-card">
+                            <small>giao hàng</small>
+                            <strong>Giao hàng toàn quốc</strong>
+                            <span>Đóng gói chỉn chu, an toàn cho từng món trang sức cao cấp.</span>
+                        </div>
+
+                        <div class="shop-trust-card">
+                            <small>thanh toán</small>
+                            <strong>Thanh toán linh hoạt</strong>
+                            <span>Hỗ trợ chuyển khoản, COD và tư vấn kỹ trước khi xác nhận đơn.</span>
+                        </div>
+
+                        <div class="shop-trust-card">
+                            <small>chăm sóc</small>
+                            <strong>Hỗ trợ tận tâm</strong>
+                            <span>Kết nối nhanh qua Zalo, Facebook và hotline với tư vấn cá nhân hóa.</span>
+                        </div>
+                    </div>
+
+                    <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                    <div class="admin-home admin-only hide-menu">
+                        <div class="shop-section-head">
+                            <div>
+                                <p class="shop-eyebrow">admin insight</p>
+                                <h2 class="shop-section-title">Bảng điều khiển nhanh</h2>
+                            </div>
+                            <span class="shop-inline-note">Theo dõi tình hình kinh doanh và tồn kho ngay trên giao diện
+                                cửa hàng.</span>
+                        </div>
+
+                        <div class="dashboard-cards">
+                            <div class="stat-card blue">
+                                <h3>Tổng sản phẩm</h3>
+                                <p id="admin-total-products">0</p>
+                                <span>Mẫu trang sức đang được quản lý</span>
+                            </div>
+
+                            <div class="stat-card green">
+                                <h3>Đơn chờ xác nhận</h3>
+                                <p id="admin-pending-orders">0</p>
+                                <span>Đơn hàng cần xử lý</span>
+                            </div>
+
+                            <div class="stat-card red">
+                                <h3>Cảnh báo tồn kho thấp</h3>
+                                <p id="admin-low-stock">0</p>
+                                <span>Sản phẩm có số lượng dưới 5</span>
+                            </div>
+
+                            <div class="stat-card orange">
+                                <h3>Tổng giá trị tồn kho</h3>
+                                <p id="admin-inventory-value">0đ</p>
+                                <span>Giá trị hiện tại của toàn bộ sản phẩm</span>
+                            </div>
+                        </div>
+
+                        <div class="tactical-divider" style="opacity: 0.5;"></div>
+
+                        <div class="trade-in-banner">
+                            <div class="trade-in-content" style="text-align: center;">
+                                <h2 class="trade-in-title">THU MUA LẠI TRANG SỨC</h2>
+                                <p class="trade-in-description">
+                                    Chúng tôi hỗ trợ định giá và thu mua lại các mẫu trang sức cũ, giúp khách hàng dễ
+                                    dàng nâng cấp lên
+                                    thiết kế mới tinh tế và phù hợp hơn. Quy trình minh bạch, nhanh chóng và tối ưu giá
+                                    trị cho từng sản phẩm.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <div id="view-order-history" class="hide-menu">
+                <div class="order-history-shell">
+                    <div class="shop-section-head">
+                        <div>
+                            <p class="shop-eyebrow">khách hàng</p>
+                            <h2 class="shop-section-title">Lịch sử mua hàng</h2>
+                        </div>
+                        <a href="javascript:void(0)" class="shop-inline-link"
+                            onclick="openStoreCatalogFromHistory()">Tiếp tục mua sắm</a>
+                    </div>
+
+                    <div class="order-history-summary-grid">
+                        <div class="stat-card blue">
+                            <h3>Tổng đơn hàng</h3>
+                            <p id="orderHistoryTotalCount">0</p>
+                            <span>Tất cả đơn hàng đã gửi từ cửa hàng.</span>
+                        </div>
+                        <div class="stat-card green">
+                            <h3>Đã hoàn tất</h3>
+                            <p id="orderHistoryDoneCount">0</p>
+                            <span>Đơn hàng đã được xác nhận thành công.</span>
+                        </div>
+                        <div class="stat-card orange">
+                            <h3>Chờ xác nhận</h3>
+                            <p id="orderHistoryPendingCount">0</p>
+                            <span>Đơn hàng đang chờ phản hồi từ cửa hàng.</span>
+                        </div>
+                        <div class="stat-card red">
+                            <h3>Tổng chi tiêu</h3>
+                            <p id="orderHistorySpentValue">0đ</p>
+                            <span>Tổng giá trị mua sắm đã ghi nhận cho tài khoản.</span>
+                        </div>
+                    </div>
+
+                    <div class="order-history-list" id="orderHistoryList"></div>
+                </div>
+            </div>
+
+            <div id="view-admin-products" class="hide-menu">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h2 class="section-title" style="margin-bottom: 0;">QUẢN LÝ SẢN PHẨM</h2>
+
+                            <div class="search-box" style="width: 350px;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="adminSearchInput"
+                                    placeholder="Nhập tên sản phẩm hoặc mã sản phẩm..."
+                                    oninput="searchAdminTable(this.value)">
+                            </div>
+
+                            <button class="tactical-btn"
+                                style="width: auto; padding: 10px 20px; background: rgb(34, 197, 94);"
+                                onclick="openAddProductForm()">
+                                <i class="fa-solid fa-plus"></i> THÊM SẢN PHẨM MỚI
+                            </button>
+                        </div>
+
+                        <div class="admin-table-container">
+                            <table class="tactical-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hình ảnh</th>
+                                        <th>Mã SP</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Đơn giá</th>
+                                        <th>Tồn kho</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="view-admin-customers" class="hide-menu">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h2 class="section-title" style="color: #d4af37; margin-bottom: 0;">
+                                KHÁCH HÀNG VIP
+                            </h2>
+
+                            <div class="vip-threshold-container">
+                                <label>Ngưỡng VIP (đ):</label>
+                                <input type="number" id="vipThresholdInput" placeholder="Ví dụ: 10,000,000">
+                                <button onclick="updateVipThreshold()">Lưu</button>
+                            </div>
+                        </div>
+
+                        <div class="top-spenders-grid" id="vip-customers-grid"></div>
+
+                        <div class="tactical-divider" style="margin: 25px 0; opacity: 0.5;"></div>
+
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                            <h2 class="section-title" style="margin-bottom: 0;">HỒ SƠ KHÁCH HÀNG</h2>
+
+                            <div class="search-box" style="width: 350px;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="adminCustomerSearchInput"
+                                    placeholder="Tìm theo tên hoặc email khách hàng..."
+                                    oninput="searchAdminCustomers(this.value)">
+                            </div>
+                        </div>
+
+                        <div class="admin-table-container">
+                            <table class="tactical-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh đại diện</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Email</th>
+                                        <th>Tổng chi tiêu</th>
+                                        <th>Hạng</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customerTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+            <div id="view-admin-staff" class="hide-menu">
+                <h2 class="section-title">QUẢN LÝ NHÂN SỰ</h2>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div class="search-box" style="width: 400px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="adminStaffSearchInput"
+                            placeholder="Tìm theo tên, số điện thoại hoặc email..."
+                            oninput="searchAdminStaff(this.value)">
+                    </div>
+
+                    <button class="tactical-btn" style="width: auto; padding: 10px 20px; background: #d4af37; color: #000;"
+                        onclick="openAddStaffForm()">
+                        <i class="fa-solid fa-user-plus"></i> THÊM NHÂN VIÊN
+                    </button>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="tactical-table">
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Họ tên</th>
+                                <th>Giới tính</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Vị trí</th>
+                                <th>Thu nhập</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-admin-suppliers" class="hide-menu">
+                <h2 class="section-title">ĐỐI TÁC CUNG CẤP</h2>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div class="search-box" style="width: 400px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="adminSupplierSearchInput"
+                            placeholder="Tìm theo tên đối tác, người liên hệ hoặc số điện thoại..."
+                            oninput="searchAdminSuppliers(this.value)">
+                    </div>
+
+                    <button class="tactical-btn" style="width: auto; padding: 10px 20px; background: #d4af37; color: #000;"
+                        onclick="openAddSupplierForm()">
+                        <i class="fa-solid fa-plus"></i> THÊM ĐỐI TÁC
+                    </button>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="tactical-table">
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Tên đối tác</th>
+                                <th>Người liên hệ</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-admin-promotions" class="hide-menu">
+                <div class="promotion-toolbar">
+                    <div>
+                        <h2 class="section-title" style="margin-bottom: 10px;">ƯU ĐÃI & KHUYẾN MÃI</h2>
+                        <p class="promotion-subtitle">
+                            Quản lý các chương trình ưu đãi, mã giảm giá và theo dõi hiệu quả áp dụng cho khách
+                            hàng.
+                        </p>
+                    </div>
+
+                    <div class="promotion-toolbar-actions">
+                        <div class="search-box promotion-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="adminPromotionSearchInput"
+                                placeholder="Tìm theo mã, tên chương trình hoặc điều kiện..."
+                                oninput="searchAdminPromotions(this.value)">
+                        </div>
+
+                        <button class="tactical-btn promotion-add-btn" style="background: #d4af37; color: #000;"
+                            onclick="openAddPromotionForm()">
+                            <i class="fa-solid fa-plus"></i> TẠO ƯU ĐÃI
+                        </button>
+                    </div>
+                </div>
+
+                <div class="promotion-summary-grid">
+                    <div class="stat-card blue">
+                        <h3>Ưu đãi đang áp dụng</h3>
+                        <p id="promotionActiveCount">0</p>
+                        <span>Các chương trình ưu đãi hiện đang áp dụng.</span>
+                    </div>
+
+                    <div class="stat-card green">
+                        <h3>Lượt sử dụng</h3>
+                        <p id="promotionUsageCount">0</p>
+                        <span>Số lượt khách hàng đã sử dụng ưu đãi.</span>
+                    </div>
+
+                    <div class="stat-card orange">
+                        <h3>Ưu đãi nổi bật</h3>
+                        <p id="promotionBestValue">0%</p>
+                        <span>Mức giảm giá cao nhất hiện có.</span>
+                    </div>
+
+                    <div class="stat-card red">
+                        <h3>Tạm ngưng</h3>
+                        <p id="promotionPausedCount">0</p>
+                        <span>Ưu đãi đã lưu nhưng chưa kích hoạt.</span>
+                    </div>
+                </div>
+
+                <div class="promotion-note-banner">
+                    <div>
+                        <strong>Gợi ý:</strong> Kết hợp ưu đãi theo bộ sưu tập hoặc sản phẩm nổi bật để tăng trải nghiệm
+                        mua sắm.
+                    </div>
+                    <div class="promotion-note-metric">
+                        <span>Sản phẩm nổi bật:</span>
+                        <strong id="promotionTopSellingCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="admin-table-container" style="min-height: 420px;">
+                    <table class="tactical-table">
+                        <thead>
+                            <tr>
+                                <th>Mã ưu đãi</th>
+                                <th>Chương trình</th>
+                                <th>Mức giảm</th>
+                                <th>Điều kiện</th>
+                                <th>Lượt dùng</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promotionTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-admin-transactions" class="hide-menu">
+                <div class="report-summary-grid">
+                    <div class="stat-card blue">
+                        <h3>Tổng hoá đơn</h3>
+                        <p id="reportTransactionCount">0</p>
+                        <span>Số yêu cầu mua hàng đã ghi nhận</span>
+                    </div>
+                    <div class="stat-card green">
+                        <h3>Đã hoàn tất</h3>
+                        <p id="reportCompletedCount">0</p>
+                        <span>Đơn đã duyệt và chốt thanh toán</span>
+                    </div>
+                    <div class="stat-card orange">
+                        <h3>Chờ duyệt</h3>
+                        <p id="reportPendingCount">0</p>
+                        <span>Đơn đang chờ admin xác nhận</span>
+                    </div>
+                    <div class="stat-card red">
+                        <h3>Doanh thu ghi nhận</h3>
+                        <p id="reportTransactionRevenue">0$</p>
+                        <span>Tổng giá trị đơn đã hoàn tất</span>
+                    </div>
+                </div>
+
+                <div class="admin-table-container" style="min-height: 420px;">
+                    <table class="tactical-table">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Thời gian</th>
+                                <th>Sản phẩm</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-admin-revenue" class="hide-menu">
+                <div class="report-toolbar">
+                    <div>
+                        <h2 class="section-title" style="margin-bottom: 10px;">THỐNG KÊ DOANH THU</h2>
+                        <p class="report-subtitle">Tổng hợp doanh thu theo đơn hàng hoàn tất, nhóm sản phẩm và
+                            khách
+                            hàng
+                            nổi bật.</p>
+                    </div>
+
+                    <div class="report-toolbar-actions">
+                        <div class="report-filter-box">
+                            <label for="revenueRangeSelect">Mốc thời gian</label>
+                            <select id="revenueRangeSelect" onchange="changeRevenueRange(this.value)">
+                                <option value="7d">7 ngày gần nhất</option>
+                                <option value="30d">30 ngày gần nhất</option>
+                                <option value="90d" selected>90 ngày gần nhất</option>
+                                <option value="12m">12 tháng gần nhất</option>
+                                <option value="all">Toàn bộ dữ liệu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-range-note" id="revenueRangeNote">Đang xem: 90 ngày gần nhất</div>
+
+                <div class="report-summary-grid">
+                    <div class="stat-card blue">
+                        <h3>Tổng doanh thu</h3>
+                        <p id="revenueTotalValue">0$</p>
+                        <span>Doanh thu từ các đơn đã hoàn tất</span>
+                    </div>
+                    <div class="stat-card green">
+                        <h3 id="revenueRangeSummaryLabel">Mốc đang xem</h3>
+                        <p id="revenueCurrentMonthValue">0$</p>
+                        <span id="revenueRangeSummaryText">Doanh thu trong giai đoạn đã chọn</span>
+                    </div>
+                    <div class="stat-card orange">
+                        <h3>Giá trị TB / đơn</h3>
+                        <p id="revenueAverageOrderValue">0$</p>
+                        <span>Mức chi tiêu bình quân mỗi giao dịch</span>
+                    </div>
+                    <div class="stat-card red">
+                        <h3>Tổng số lượng bán</h3>
+                        <p id="revenueUnitsSold">0</p>
+                        <span>Số sản phẩm đã đi qua hệ thống</span>
+                    </div>
+                </div>
+
+                <div class="report-grid-panels revenue-chart-layout">
+                    <div class="report-panel revenue-main-chart">
+                        <div class="report-panel-header">
+                            <h3 id="revenueTrendTitle">Biểu đồ doanh thu theo tháng</h3>
+                            <span id="revenueTrendCaption">So sánh nhanh theo mốc thời gian đã chọn</span>
+                        </div>
+                        <div id="revenueTrendChart" class="revenue-trend-chart"></div>
+                    </div>
+
+                    <div class="report-panel revenue-donut-panel">
+                        <div class="report-panel-header">
+                            <h3>Tỷ trọng doanh thu theo danh mục</h3>
+                            <span>Nhóm sản phẩm đóng góp cao nhất</span>
+                        </div>
+                        <div id="revenueCategoryChart" class="revenue-category-chart"></div>
+                    </div>
+                </div>
+
+                <div class="report-panel">
+                    <div class="report-panel-header">
+                        <h3>Biểu đồ khách hàng chi tiêu cao</h3>
+                        <span>Xếp hạng theo tổng giá trị đơn đã hoàn tất</span>
+                    </div>
+                    <div id="revenueCustomerChart" class="revenue-customer-chart"></div>
+                </div>
+            </div>
+
+    </main>
+
+    <script src="../js/database.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui-modals.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/admin-features.js"></script>
+    <script src="../js/admin-reports.js"></script>
+    <script src="../js/admin-products.js"></script>
+    <script src="../js/admin-customers.js"></script>
+    <script src="../js/admin-staff.js"></script>
+    <script src="../js/admin-suppliers.js"></script>
+    <script src="../js/personal-info.js"></script>
+    <script src="../js/order-history.js"></script>
+    <script>
+        window.onload = () => {
+            renderSidebar();
+            renderTopSelling();
+            if (typeof renderSaleProducts === 'function') renderSaleProducts();
+            if (typeof renderStorePromoStrip === 'function') renderStorePromoStrip();
+            renderProducts('all');
+            if (typeof hydrateCartFromStorage === 'function') hydrateCartFromStorage();
+            if (typeof renderStoreInsights === 'function') renderStoreInsights();
+            if (typeof renderOrderHistory === 'function') renderOrderHistory();
+            if (typeof updateInboxCounter === 'function') updateInboxCounter();
+
+            // Cập nhật lại list menu danh mục cho Modal Admin nếu nó bị tạo từ ui-modals
+            const adminCategorySelect = document.getElementById('formCategory');
+            if (adminCategorySelect) {
+                adminCategorySelect.innerHTML = `
+        <optgroup label="Nhẫn">
+            <option value="nhanbac">Nhẫn bạc</option>
+            <option value="nhanvang">Nhẫn vàng</option>
+            <option value="nhanmoissanite">Nhẫn moissanite</option>
+            <option value="nhandaquy">Nhẫn đá quý</option>
+        </optgroup>
+
+        <optgroup label="Dây chuyền">
+            <option value="daychuyenbac">Dây chuyền bạc</option>
+            <option value="daychuyenvang">Dây chuyền vàng</option>
+            <option value="matday">Mặt dây chuyền</option>
+        </optgroup>
+
+        <optgroup label="Bông tai">
+            <option value="bongtai-dinhda">Bông tai đính đá</option>
+            <option value="bongtai-ngoctrai">Bông tai ngọc trai</option>
+            <option value="bongtai-toigian">Bông tai tối giản</option>
+        </optgroup>
+
+        <optgroup label="Lắc tay & Vòng">
+            <option value="lactay">Lắc tay</option>
+            <option value="vongtay">Vòng tay</option>
+        </optgroup>
+
+        <optgroup label="Trang sức nam">
+            <option value="nhannam">Nhẫn nam</option>
+            <option value="daychuyennam">Dây chuyền nam</option>
+            <option value="lactaynam">Lắc tay nam</option>
+        </optgroup>
+
+        <optgroup label="Trang sức cưới">
+            <option value="nhancuoi">Nhẫn cưới</option>
+            <option value="nhancapdoi">Nhẫn cặp đôi</option>
+            <option value="quatang">Quà tặng kỷ niệm</option>
+        </optgroup>
+
+        <optgroup label="Phụ kiện">
+            <option value="hoptrangsuc">Hộp trang sức</option>
+            <option value="khanlau">Khăn lau</option>
+            <option value="phukien">Phụ kiện chung</option>
+        </optgroup>
+    `;
+            }
+        }
+    </script>
+</body>
+
+</html>

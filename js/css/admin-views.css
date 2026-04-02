@@ -1,0 +1,55 @@
+/* ================= THANH TÌM KIẾM ================= */
+/* Admin views layer: common table/search wrappers reused by multiple admin screens. */
+.filter-search-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+.search-box { position: relative; width: 300px; }
+.search-box input {
+    width: 100%; padding: 10px 15px 10px 40px; background: var(--bg-panel); border: 1px solid var(--border);
+    border-radius: 20px; color: var(--text-dark); font-size: 15px; outline: none; transition: all 0.3s ease;
+}
+.search-box input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 110, 255, 0.2); }
+.search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+/* ================= BẢNG QUẢN TRỊ ADMIN (FIX NHẢY TRANG) ================= */
+.admin-table-container {
+    background: var(--bg-panel); border-radius: 16px; padding: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); overflow-x: auto;
+    border: 1px solid var(--border);
+    min-height: 500px; /* Khóa khung bảng, gõ tìm kiếm không bị giật trang */
+}
+.tactical-table { width: 100%; border-collapse: collapse; color: var(--text-dark); }
+.tactical-table th { text-align: left; padding: 15px; background: rgba(0, 0, 0, 0.3); color: rgb(200, 215, 235); font-weight: bold; text-transform: uppercase; font-size: 13px; border-bottom: 2px solid var(--border); }
+.tactical-table td { padding: 15px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tactical-table tr:hover { background: rgba(0, 110, 255, 0.1); }
+.table-img { width: 50px; height: 50px; object-fit: contain; background: var(--bg-panel); border-radius: 8px; padding: 5px; }
+.action-icon-btn { background: transparent; border: none; font-size: 18px; cursor: pointer; margin-right: 10px; transition: all 0.2s; }
+.edit-btn { color: rgb(245, 158, 11); }
+.edit-btn:hover { color: rgb(200, 120, 0); transform: scale(1.1); }
+.delete-btn { color: rgb(239, 68, 68); }
+.delete-btn:hover { color: rgb(180, 30, 30); transform: scale(1.1); }
+
+/* ================= HIỆU ỨNG HÀNG TRONG BẢNG (THÊM / SỬA / XÓA) ================= */
+.fade-in-row-anim { animation: fadeInRow 0.3s ease forwards; }
+@keyframes fadeInRow {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.fade-out-row { animation: fadeOutRow 0.3s ease forwards !important; }
+@keyframes fadeOutRow {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+/* Lóe sáng xanh lá khi thêm mới hoặc sửa thành công */
+.highlight-row { animation: highlightGlow 1.5s ease forwards; }
+@keyframes highlightGlow {
+    0% { background: rgba(34, 197, 94, 0.4); }
+    100% { background: transparent; }
+}
+
+/* ================= HIỆU ỨNG CHUYỂN TRANG (TỪ TRANG CHỦ -> SẢN PHẨM) ================= */
+.view-section { animation: fadeInView 0.4s ease forwards; }
+@keyframes fadeInView {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}

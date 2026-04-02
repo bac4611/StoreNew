@@ -1,0 +1,33 @@
+/* Base layer: reset + root tokens + shared primitive defaults. */
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    list-style: none; text-decoration: none;
+}
+:root {
+    --primary: #D4AF37;
+    --bg-main: #000000;
+    --bg-card: #1C1C1C;
+    --bg-panel: #1C1C1C;
+    --text-dark: #FFFFFF;
+    --text-light: #FFFFFF;
+    --text-muted: #F5F5F5;
+    --border: #B8962E;
+    --glow: rgba(212, 175, 55, 0.45);
+    --danger: rgb(239, 68, 68);
+    --success: rgb(34, 197, 94);
+}
+html { scroll-behavior: smooth; }
+body {
+    background:
+        radial-gradient(circle at top right, rgb(0, 0, 0), transparent 30%),
+        linear-gradient(180deg, #000000, #000000);
+    color: var(--text-light);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+.hide-menu { display: none !important; }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

@@ -1,0 +1,34 @@
+/* ================= KHU VỰC VINH DANH NHÂN VIÊN ================= */
+/* Admin staff layer: staff honor cards and table visual decorations. */
+.staff-honor-board {
+    margin-bottom: 30px;
+    animation: fadeInView 0.5s ease forwards;
+}
+
+.honor-card {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 160, 70, 0.05));
+    border: 1px solid rgb(34, 197, 94);
+    border-radius: 16px; padding: 20px;
+    display: flex; align-items: center; gap: 20px;
+    box-shadow: 0 10px 20px rgba(34, 197, 94, 0.1);
+}
+
+.honor-icon {
+    width: 70px; height: 70px;
+    background: rgb(34, 197, 94);
+    color: rgb(255, 255, 255);
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 50%; font-size: 30px;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+}
+
+.honor-info { flex: 1; }
+.honor-title { color: rgb(34, 197, 94); font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+.honor-name { color: rgb(255, 255, 255); font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+.honor-stats { color: rgb(200, 215, 235); font-size: 15px; }
+
+/* ================= BẢNG NHÂN SỰ ================= */
+.role-badge {
+    padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;
+    background: rgba(0, 110, 255, 0.2); color: rgb(0, 110, 255);
+}

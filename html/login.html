@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACDUNG-JEWERRY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body class="login-brand-background">
+    <!-- Auth shell: promo panel (left) + login/register/forgot forms (right). -->
+    <main class="login-layout-wrapper">
+        <div class="login-grid fade-in-tactical">
+            
+            <aside class="login-promo-left">
+                
+                <img src="../images/logo2.png" class="video-hero" alt="Store Banner" onerror="this.onerror=null;this.src='../banner-home.svg';">
+
+                <section class="payment-methods-box" aria-labelledby="paymentMethodsTitle">
+                    <div class="payment-methods-header">
+                        <p class="payment-methods-label">PHƯƠNG THỨC THANH TOÁN</p>
+                    </div>
+
+                    <div class="payment-methods-grid">
+                        <article class="payment-method-card">
+                            <div class="payment-method-logo">
+                                <img src="../images/payment/vnpay.svg" alt="VNPAY" loading="lazy">
+                            </div>
+                            <div class="payment-method-copy">
+                                <strong>VNPAY</strong>
+                                <span>Quét mã và thanh toán nhanh qua cổng VNPAY.</span>
+                            </div>
+                        </article>
+
+                        <article class="payment-method-card">
+                            <div class="payment-method-logo">
+                                <img src="../images/payment/paypal.svg" alt="PayPal" loading="lazy">
+                            </div>
+                            <div class="payment-method-copy">
+                                <strong>PAYPAL</strong>
+                                <span>Hỗ trợ thanh toán quốc tế an toàn, tiện lợi.</span>
+                            </div>
+                        </article>
+
+                        <article class="payment-method-card">
+                            <div class="payment-method-logo">
+                                <img src="../images/payment/vietqr.svg" alt="VietQR Banking QR" loading="lazy">
+                            </div>
+                            <div class="payment-method-copy">
+                                <strong>BANKING QR</strong>
+                                <span>Chuyển khoản ngân hàng nhanh bằng mã VietQR.</span>
+                            </div>
+                        </article>
+
+                        <article class="payment-method-card">
+                            <div class="payment-method-logo payment-method-logo-cash">
+                                <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
+                            </div>
+                            <div class="payment-method-copy">
+                                <strong>TIỀN MẶT</strong>
+                                <span>Thanh toán trực tiếp khi nhận sản phẩm.</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </aside>
+
+            <section class="login-form-side">
+                <div class="login-form-box">
+                    <a href="home.html" class="login-back-home"><i class="fa-solid fa-arrow-left"></i> Về trang chủ</a>
+                    
+                    <div class="styled-title-block">
+                        <h1 class="title">HỆ THỐNG MUA HÀNG ONLINE</h1>
+                    </div>
+                    <p class="login-desc-text">Nhập thông tin để truy cập vào hệ thống điều hành.</p>
+                    
+                    <div class="auth-feedback info" id="authFeedback">Điền thông tin phù hợp để tiếp tục thao tác.</div>
+
+                    <div id="login-form" class="auth-form-container">
+                        <form class="login-form" onsubmit="return login(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="email">Tên đăng nhập / Email</label>
+                                <input type="text" class="form-input" id="email" placeholder="VD: nguyenvanA@gmail.com" required autocomplete="username">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="password">Mật khẩu</label>
+                                <input type="password" class="form-input" id="password" placeholder="••••••••" required autocomplete="current-password">
+                                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password', 'passwordToggleIcon1')"><i class="fa-solid fa-eye" id="passwordToggleIcon1"></i></button>
+                            </div>
+
+                            <div class="form-meta">
+                                <label class="remember-checkbox">
+                                    <input type="checkbox"> Ghi nhớ mật khẩu cho lần sau
+                                </label>
+                                <a onclick="toggleForm('forgot-form')" class="forgot-pass">Quên mật khẩu?</a>
+                            </div>
+
+                            <button type="submit" class="login-btn">ĐĂNG NHẬP NGAY</button>
+
+                            <div class="login-footer">
+                                <span>Chưa có tài khoản? <a onclick="toggleForm('register-form')">Đăng ký ngay!</a></span>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="register-form" class="auth-form-container hide-menu">
+                        <form class="login-form" onsubmit="return register(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="reg-name">Tên hiển thị (Nickname)</label>
+                                <input type="text" class="form-input" id="reg-name" placeholder="Ví dụ: bac123" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-email">Email liên hệ</label>
+                                <input type="email" class="form-input" id="reg-email" placeholder="Email của bạn..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-password">Mật khẩu</label>
+                                <input type="password" class="form-input" id="reg-password" placeholder="••••••••" required>
+                                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-password', 'passwordToggleIcon2')"><i class="fa-solid fa-eye" id="passwordToggleIcon2"></i></button>
+                            </div>
+
+                            <button type="submit" class="login-btn">TẠO TÀI KHOẢN</button>
+                            
+                            <div class="login-footer">
+                                <a onclick="toggleForm('login-form')"><i class="fa-solid fa-arrow-left"></i> Trở lại trạm đăng nhập</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="forgot-form" class="auth-form-container hide-menu">
+                        <form class="login-form" onsubmit="return handleForgotPass(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="forgot-email">Email đã đăng ký</label>
+                                <input type="email" class="form-input" id="forgot-email" placeholder="Nhập email của bạn..." required>
+                            </div>
+
+                            <div id="forgotResultBox" class="hide-menu" style="background: rgba(212, 175, 55, 0.12); border: 1px solid #B8962E; padding: 15px; border-radius: 0; text-align: center; margin-bottom: 15px;">
+                                <p style="color: #D4AF37; font-weight: 800; margin-bottom: 5px;">Hệ thống đã định vị tài khoản!</p>
+                                <p style="color: #FFFFFF; font-size: 14px; font-weight: 800;">Mật khẩu của bạn là: <strong id="recoveredPassword" style="color: #D4AF37; font-size: 18px;"></strong></p>
+                            </div>
+
+                            <button type="submit" class="login-btn">TÌM LẠI MẬT KHẨU</button>
+                            
+                            <div class="login-footer">
+                                <a onclick="toggleForm('login-form')"><i class="fa-solid fa-arrow-left"></i> Trở lại trạm đăng nhập</a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <script src="../js/database.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                window.location.replace('index.html');
+            }
+        } catch (error) {
+            // Ignore malformed localStorage state and let user stay on login page.
+        }
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

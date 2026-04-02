@@ -1,0 +1,13 @@
+body.index-square-ui,
+body.index-square-ui * ,
+body.index-square-ui *::before,
+body.index-square-ui *::after {
+    border-radius: 0 !important;
+}
+
+body.index-square-ui img,
+body.index-square-ui video,
+body.index-square-ui canvas,
+body.index-square-ui iframe {
+    border-radius: 0 !important;
+}

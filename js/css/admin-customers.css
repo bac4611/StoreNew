@@ -1,0 +1,54 @@
+/* ================= KHU VỰC KHÁCH HÀNG VIP ================= */
+/* Admin customers layer: VIP cards, threshold controls, customer table accents. */
+[id="view-admin-customers"] .top-spenders-grid { 
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; 
+}
+.vip-card { 
+    background: linear-gradient(135deg, rgb(30, 41, 59), rgb(15, 23, 42)); 
+    border: 1px solid rgb(245, 158, 11); border-radius: 16px; padding: 20px; 
+    display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden; 
+    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.15); animation: fadeInView 0.5s ease forwards; 
+}
+.vip-card::before { 
+    content: 'VIP'; position: absolute; top: 10px; right: 15px; 
+    color: rgb(245, 158, 11); font-weight: bold; font-size: 14px; letter-spacing: 2px; 
+}
+.vip-avatar { 
+    width: 60px; height: 60px; background: rgba(245, 158, 11, 0.1); 
+    color: rgb(245, 158, 11); display: flex; justify-content: center; align-items: center; 
+    border-radius: 50%; font-size: 24px; font-weight: bold; border: 2px solid rgb(245, 158, 11); 
+}
+.vip-info { flex: 1; }
+.vip-name { color: rgb(255, 255, 255); font-size: 18px; margin-bottom: 5px; }
+.vip-spent { color: rgb(34, 197, 94); font-weight: bold; font-size: 16px; }
+
+/* ================= BỘ CÀI ĐẶT HẠN MỨC VIP ================= */
+.vip-threshold-container {
+    display: flex; align-items: center; gap: 15px; background: var(--bg-panel); 
+    padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border);
+}
+.vip-threshold-container label { color: var(--text-dark); font-weight: bold; font-size: 14px; }
+.vip-threshold-container input {
+    width: 120px; padding: 8px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--bg-card); color: var(--text-dark); outline: none; font-weight: bold;
+}
+.vip-threshold-container button {
+    padding: 8px 15px; background: rgb(245, 158, 11); color: rgb(255,255,255); 
+    border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s;
+}
+.vip-threshold-container button:hover { background: rgb(200, 120, 0); }
+
+/* ================= BẢNG DANH SÁCH & HUY HIỆU ================= */
+.badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.badge-active { background: rgba(34, 197, 94, 0.2); color: rgb(34, 197, 94); }
+.badge-locked { background: rgba(239, 68, 68, 0.2); color: rgb(239, 68, 68); }
+
+.action-icon-btn.gift-btn { color: rgb(59, 130, 246); }
+.action-icon-btn.gift-btn:hover { color: rgb(37, 99, 235); transform: scale(1.2); }
+.action-icon-btn.lock-btn { color: rgb(239, 68, 68); }
+.action-icon-btn.lock-btn:hover { color: rgb(180, 30, 30); transform: scale(1.2); }
+.action-icon-btn.unlock-btn { color: rgb(34, 197, 94); }
+.action-icon-btn.unlock-btn:hover { color: rgb(20, 160, 70); transform: scale(1.2); }
+
+/* Ép màu chữ thường thành Đen đậm để dễ nhìn */
+[id="customerTableBody"] td { color: rgb(30, 41, 59); }

@@ -1,0 +1,138 @@
+/* Layout layer: page shell (sidebar/main), hero blocks, and responsive scaffolding. */
+.brand-background {
+    background:
+        linear-gradient(180deg, rgba(15, 15, 15, 0.86), rgba(15, 15, 15, 0.92)),
+        url("../images/854fdabf-8092-4470-86eb-fd9358da5809.png") center center / cover no-repeat fixed;
+}
+
+.sidebar {
+    width: 280px; background: var(--bg-card); color: var(--text-dark); 
+    margin: 20px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); 
+    display: flex; flex-direction: column; padding: 20px 0; position: fixed;
+    height: calc(100vh - 40px); z-index: 100;
+}
+.user-profile-box { display: flex; align-items: center; padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.avatar-pill {
+    width: 45px; height: 45px; background: var(--primary); color: rgb(255, 255, 255);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    font-weight: bold; font-size: 20px; margin-right: 15px;
+}
+.user-info h4 { font-size: 16px; color: var(--text-dark); }
+.user-info span { font-size: 12px; color: var(--text-muted); }
+.nav-group { margin-bottom: 10px; }
+.nav-title { font-size: 13px; font-weight: bold; color: var(--text-muted); padding: 0 20px; margin-bottom: 10px; margin-top: 10px; }
+.nav-item {
+    padding: 12px 20px; margin: 4px 15px; color: var(--text-dark); display: flex;
+    align-items: center; gap: 15px; border-radius: 12px; cursor: pointer; 
+    transition: all 0.3s ease; font-weight: 500; font-size: 15px;
+}
+.nav-item-badge {
+    margin-left: auto;
+    min-width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: rgb(37, 99, 235);
+    font-size: 12px;
+    font-weight: 800;
+}
+.nav-item-badge.secondary {
+    background: rgba(245, 158, 11, 0.12);
+    color: rgb(217, 119, 6);
+}
+.nav-item i { font-size: 18px; width: 24px; text-align: center; }
+.nav-item:hover { background: rgba(0, 110, 255, 0.1); color: var(--primary); }
+.nav-item.active { background: var(--primary); color: rgb(255, 255, 255); box-shadow: 0 4px 15px var(--glow); }
+.nav-item.active .nav-item-badge {
+    background: rgba(212, 161, 173, 0.16);
+    color: rgb(255, 255, 255);
+}
+
+.main-content { margin-left: 320px; width: calc(100% - 320px); padding: 20px 20px 20px 0; display: block; }
+
+.top-hero-banner {
+    width: 100%;
+    height: 300px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    background-color: var(--bg-panel);
+}
+
+.top-hero-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: rgb(0, 0, 0);
+}
+
+.hero-grid { 
+    display: flex; height: 500px; gap: 24px;
+    background: transparent; box-shadow: none; 
+}
+.hero-left { 
+    width: 60%; height: 100%; border-radius: 24px; overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+}
+.hero-right { 
+    width: 40%; height: 100%; display: flex; flex-direction: column; gap: 24px; 
+}
+.video-wrapper { 
+    width: 100%; height: calc(50% - 12px); border-radius: 24px; overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+}
+.hero-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+.hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+
+.category-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
+.tab-btn {
+    padding: 10px 20px; background: var(--bg-card); border: none; border-radius: 20px;
+    cursor: pointer; font-weight: 600; color: var(--text-dark); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;
+}
+.tab-btn:hover { color: var(--primary); transform: translateY(-2px); }
+.tab-btn.active { background: var(--primary); color: rgb(255, 255, 255); box-shadow: 0 4px 15px rgba(0, 110, 255, 0.4); }
+
+@media (max-width: 1100px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: calc(100% - 24px);
+        height: auto;
+        margin: 12px;
+        max-height: none;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 0 12px 20px;
+    }
+}
+
+@media (max-width: 720px) {
+    .sidebar {
+        border-radius: 18px;
+    }
+
+    .nav-item {
+        margin: 4px 10px;
+        padding: 12px 14px;
+        gap: 12px;
+    }
+
+    .top-hero-banner {
+        height: 220px;
+    }
+}

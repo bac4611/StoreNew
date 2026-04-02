@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAC DUNG JEWERRY | Giá vàng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/gold-price.css">
+</head>
+
+<body class="gold-market-page">
+    <div class="gold-market-shell">
+        <header class="gold-market-header">
+            <a href="home.html" class="gold-market-brand">
+                <img src="../images/logo.png" alt="BACDUNG JEWERRY">
+            </a>
+
+            <nav class="gold-market-nav" aria-label="Dieu huong trang gia vang">
+                <a href="home.html">Trang chủ</a>
+                <a href="index.html">Hệ thống</a>
+                <a href="login.html">Đăng nhập</a>
+            </nav>
+        </header>
+
+        <main class="gold-market-grid">
+            <section class="gold-market-panel">
+                <div class="gold-market-section-title">
+                    <span>Thị trường vàng</span>
+                    <div class="gold-market-ornament" aria-hidden="true"></div>
+                </div>
+
+                <div class="gold-market-box">
+                    <div class="gold-market-box-header">
+                        <p>Giá vàng hôm nay</p>
+                        <h1>Tại BAC DUNG JEWERLY</h1>
+                        <span class="gold-market-unit">Đơn vị tính: Đồng/ chỉ</span>
+                    </div>
+
+                    <div class="gold-market-table" role="table" aria-label="Bảng giá vàng tham khảo">
+                        <div class="gold-market-table-head" role="row">
+                            <span role="columnheader">Loại vàng</span>
+                            <span role="columnheader">Mua vào</span>
+                            <span role="columnheader">Bán ra</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Nhẫn tròn ép ví 24K (999.9)</span>
+                            <span role="cell">11.250.000</span>
+                            <span role="cell">11.480.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Dòng vàng hoa sen 24K</span>
+                            <span role="cell">11.240.000</span>
+                            <span role="cell">11.460.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Vàng tiêu kim cát 24K</span>
+                            <span role="cell">11.220.000</span>
+                            <span role="cell">11.450.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Nhẫn tròn 999.9</span>
+                            <span role="cell">11.230.000</span>
+                            <span role="cell">11.460.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Vàng trang sức 24K</span>
+                            <span role="cell">11.180.000</span>
+                            <span role="cell">11.420.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Vàng trang sức 18K</span>
+                            <span role="cell">8.150.000</span>
+                            <span role="cell">8.650.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Vàng miếng SJC</span>
+                            <span role="cell">11.650.000</span>
+                            <span role="cell">11.950.000</span>
+                        </div>
+
+                        <div class="gold-market-table-row" role="row">
+                            <span role="cell">Vàng nguyên liệu 999.9</span>
+                            <span role="cell">11.210.000</span>
+                            <span role="cell">11.430.000</span>
+                        </div>
+                    </div>
+
+                    <p class="gold-market-disclaimer">
+                        Lưu ý: Giá vàng trên đây chỉ mang tính chất tham khảo và có thể thay đổi theo thời gian thực.
+                        Vui lòng liên hệ trực tiếp với cửa hàng hoặc truy cập trang web chính thức của chúng tôi để biết
+                        giá vàng cập nhật nhất trước khi thực hiện giao dịch.
+                    </p>
+                </div>
+            </section>
+
+            <section class="gold-market-panel">
+                <div class="gold-market-section-title">
+                    <span>Biểu đồ giá vàng</span>
+                    <div class="gold-market-ornament" aria-hidden="true"></div>
+                </div>
+
+                <div class="gold-market-box">
+                    <div class="gold-market-filter">
+                        <div class="gold-market-filter-group">
+                            <label for="goldTypeSelect">Mã vàng:</label>
+                            <select id="goldTypeSelect" aria-label="Chon ma vang">
+                                <option>Nhẫn Tròn ép ví 24k</option>
+                                <option>Vàng 24K</option>
+                                <option>Vàng 18K</option>
+                                <option>Vàng cưới</option>
+                            </select>
+                        </div>
+
+                        <div class="gold-market-legend" aria-label="Chu giai bieu do">
+                            <span class="gold-market-legend-item">
+                                <span class="gold-market-legend-line is-buy" aria-hidden="true"></span>
+                                <span>Bán </span>
+                            </span>
+                            <span class="gold-market-legend-item">
+                                <span class="gold-market-legend-line" aria-hidden="true"></span>
+                                <span>Mua</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="gold-market-chart-frame" aria-label="Bieu do gia vang minh hoa">
+                        <svg viewBox="0 0 560 330" role="img" aria-label="Duong gia mua va ban minh hoa">
+                            <rect x="0" y="0" width="560" height="330" fill="transparent"></rect>
+                            <g stroke="rgba(24, 35, 58, 0.12)" stroke-width="1">
+                                <line x1="48" y1="44" x2="520" y2="44"></line>
+                                <line x1="48" y1="80" x2="520" y2="80"></line>
+                                <line x1="48" y1="116" x2="520" y2="116"></line>
+                                <line x1="48" y1="152" x2="520" y2="152"></line>
+                                <line x1="48" y1="188" x2="520" y2="188"></line>
+                                <line x1="48" y1="224" x2="520" y2="224"></line>
+                                <line x1="48" y1="260" x2="520" y2="260"></line>
+                            </g>
+
+                            <polyline fill="none" stroke="#2d9c63" stroke-width="4"
+                                points="50,118 86,82 122,112 158,128 194,118 230,118 266,108 302,108 338,128 374,134 410,176 446,204 482,264 518,250">
+                            </polyline>
+                            <polyline fill="none" stroke="#b62525" stroke-width="3"
+                                points="50,138 86,102 122,132 158,150 194,146 230,138 266,142 302,138 338,150 374,150 410,198 446,222 482,282 518,270">
+                            </polyline>
+
+                            <g fill="#b3b1b5" font-size="11" font-family="Manrope, sans-serif">
+                                <text x="526" y="48">19,500,000</text>
+                                <text x="526" y="84">19,000,000</text>
+                                <text x="526" y="120">18,500,000</text>
+                                <text x="526" y="156">18,000,000</text>
+                                <text x="526" y="192">17,500,000</text>
+                                <text x="526" y="228">17,000,000</text>
+                                <text x="526" y="264">16,500,000</text>
+                            </g>
+
+                            <g fill="#4a4a4f" font-size="11" font-family="Manrope, sans-serif">
+                                <text transform="translate(46 304) rotate(-45)">1/3</text>
+                                <text transform="translate(104 304) rotate(-45)">5/3</text>
+                                <text transform="translate(162 304) rotate(-45)">9/3</text>
+                                <text transform="translate(220 304) rotate(-45)">13/3</text>
+                                <text transform="translate(278 304) rotate(-45)">17/3</text>
+                                <text transform="translate(336 304) rotate(-45)">21/3</text>
+                                <text transform="translate(394 304) rotate(-45)">25/3</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="gold-market-periods" aria-label="Che do xem bieu do">
+                        <span>Xem theo:</span>
+                        <span class="gold-market-period">
+                            <span class="gold-market-period-dot" aria-hidden="true"></span>
+                            <span>24 giờ</span>
+                        </span>
+                        <span class="gold-market-period">
+                            <span class="gold-market-period-dot" aria-hidden="true"></span>
+                            <span>Tuần</span>
+                        </span>
+                        <span class="gold-market-period is-active">
+                            <span class="gold-market-period-dot" aria-hidden="true"></span>
+                            <span>Tháng</span>
+                        </span>
+                        <span class="gold-market-period">
+                            <span class="gold-market-period-dot" aria-hidden="true"></span>
+                            <span>Năm</span>
+                        </span>
+                    </div>
+
+                    <p class="gold-market-side-note">
+                        
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

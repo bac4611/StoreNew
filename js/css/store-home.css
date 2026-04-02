@@ -1,0 +1,1106 @@
+/* Storefront layer: homepage KPIs, category cards, catalog and customer panels. */
+.storefront-header-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 26px;
+    background: rgba(255, 250, 245, 0.98);
+    border: 1px solid rgba(212, 175, 55, 0.18);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
+}
+
+.storefront-header-top {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) auto minmax(220px, 1fr);
+    align-items: center;
+    gap: 24px;
+    padding: 24px 28px 22px;
+}
+
+.storefront-header-left,
+.storefront-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.storefront-header-actions {
+    justify-self: end;
+}
+
+.storefront-searchbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    min-width: min(340px, 100%);
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgb(255, 255, 255);
+    color: rgb(100, 116, 139);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.storefront-searchbox i {
+    color: rgb(31, 41, 55);
+    font-size: 18px;
+}
+
+.storefront-searchbox input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: rgb(30, 41, 59);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.storefront-searchbox input::placeholder {
+    color: rgb(100, 116, 139);
+}
+
+.storefront-branding {
+    display: inline-flex;
+    align-items: center;
+    justify-self: center;
+    text-decoration: none;
+    width: min(100%, 520px);
+}
+
+.storefront-brand-logo {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    object-fit: contain;
+}
+
+.storefront-icon-btn {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: rgb(31, 41, 55);
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.storefront-icon-btn:hover {
+    transform: translateY(-2px);
+    color: rgb(217, 119, 6);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.storefront-count {
+    position: absolute;
+    top: 2px;
+    right: -1px;
+    min-width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.06);
+    color: rgb(31, 41, 55);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.storefront-category-bar {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    border-top: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.storefront-category-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 68px;
+    padding: 14px 10px;
+    border: none;
+    border-right: 1px solid rgba(148, 163, 184, 0.16);
+    background: transparent;
+    color: rgb(15, 23, 42);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.storefront-category-link:last-child {
+    border-right: none;
+}
+
+.storefront-category-link:hover {
+    background: rgba(229, 152, 145, 0.08);
+    color: #d97770;
+}
+
+.storefront-category-link i {
+    font-size: 12px;
+}
+
+.customer-home {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Đã giảm từ 24px xuống 16px */
+}
+
+.shop-announcement-bar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.shop-announcement-bar span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    color: rgb(226, 232, 240);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.shop-announcement-bar i {
+    color: rgb(251, 191, 36);
+}
+
+.shop-hero-panels {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
+    gap: 22px;
+}
+
+.shop-hero-card,
+.shop-side-card,
+.shop-catalog-panel,
+.shop-trust-card {
+    border-radius: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
+}
+
+.shop-hero-card {
+    padding: 34px;
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34%),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+}
+
+.shop-eyebrow {
+    color: rgb(251, 191, 36);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    margin-bottom: 12px;
+}
+
+.shop-hero-card h1 {
+    color: rgb(248, 250, 252);
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.05;
+    margin-bottom: 16px;
+    max-width: 10ch;
+}
+
+.shop-hero-copy {
+    color: rgb(203, 213, 225);
+    max-width: 64ch;
+    line-height: 1.65;
+    margin-bottom: 22px;
+}
+
+.shop-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.shop-primary-btn {
+    width: auto;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgb(14, 165, 233), rgb(37, 99, 235));
+}
+
+.shop-secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.08);
+    color: rgb(253, 224, 71);
+    font-weight: 700;
+}
+
+.shop-hero-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.shop-hero-tags span {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgb(226, 232, 240);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.shop-side-stack {
+    display: grid;
+    gap: 18px;
+}
+
+.shop-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.shop-kpi-card {
+    padding: 22px;
+    border-radius: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    background:
+        radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 30%),
+        rgba(5, 17, 96, 0.96);
+    color: var(--text-dark);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+}
+
+.shop-kpi-card small { /*đổi màu danh mục dưới*/
+    display: inline-block;
+    color: rgb(37, 99, 235);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.shop-kpi-card strong {
+    display: block;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.shop-kpi-card span {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.shop-promo-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.shop-promo-card {
+    padding: 20px 22px;
+    border-radius: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.94));
+    box-shadow: 0 18px 32px rgba(2, 6, 23, 0.24);
+}
+
+.shop-promo-card small {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: rgb(251, 191, 36);
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.shop-promo-card strong {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: rgb(248, 250, 252);
+}
+
+.shop-promo-card span {
+    color: rgb(203, 213, 225);
+    line-height: 1.6;
+}
+
+.shop-side-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+    min-height: 185px;
+}
+
+.shop-side-card strong {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.shop-side-card p {
+    color: rgb(203, 213, 225);
+    line-height: 1.55;
+    flex: 1;
+}
+
+.shop-side-kicker {
+    color: rgb(251, 191, 36);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.shop-side-btn {
+    align-self: flex-start;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.shop-side-card.accent-orange {
+    background: linear-gradient(150deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.9));
+}
+
+.shop-side-card.accent-dark {
+    background:
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.2), transparent 34%),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+}
+
+/* THAY ĐỔI Ở ĐÂY: Ép 4 cột để 8 thẻ xếp thành 2 hàng (4x2) */
+.shop-category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.shop-category-card { /*đổi màu catalog*/
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid rgb(189, 189, 26);
+    border-radius: 22px;
+    background: linear-gradient(135deg, #e1b01d, #D4AF37);
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(195, 166, 20, 0.12);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.shop-category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(37, 99, 235, 0.18);
+}
+
+.shop-category-card i {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(161, 170, 39, 0.1);
+    color: rgb(174, 35, 35);
+    font-size: 18px;
+}
+
+.shop-category-card strong {
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+.shop-category-card span {
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.shop-benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.shop-benefit-card { /*đổi màu trên phần trang sức nổi bật*/
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 20px;
+    background: rgb(0, 0, 0);
+    color: var(--text-dark);
+    box-shadow: 0 14px 24px rgb(0, 0, 0);
+}
+
+.shop-benefit-card i {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: rgba(251, 191, 36, 0.14);
+    color: rgb(217, 119, 6);
+    font-size: 18px;
+}
+
+.shop-benefit-card strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.shop-benefit-card span {
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.shop-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.shop-section-title {
+    color: rgb(248, 250, 252);
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.1;
+}
+
+.shop-inline-link,
+.shop-inline-note {
+    color: rgb(148, 163, 184);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.shop-inline-link {
+    color: rgb(248, 250, 252);
+    border-bottom: 1px solid rgba(248, 250, 252, 0.35);
+}
+
+.shop-catalog-panel {
+    padding: 28px;
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 24%),
+        transparent;
+    border-color: rgba(148, 163, 184, 0.08);
+    box-shadow: none;
+}
+
+.shop-catalog-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.shop-catalog-toolbar .shop-section-title {
+    color: rgb(248, 250, 252);
+}
+
+.shop-result-note {
+    display: inline-block;
+    margin-top: 10px;
+    color: rgb(148, 163, 184);
+    font-size: 14px;
+}
+
+.shop-catalog-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.shop-search-box {
+    width: min(360px, 100%);
+}
+
+.shop-trust-panels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.shop-trust-card {
+    padding: 24px;
+    background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.94));
+    color: rgb(226, 232, 240);
+}
+
+.shop-trust-card small {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: rgb(251, 191, 36);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 800;
+}
+
+.shop-trust-card strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.shop-trust-card span {
+    color: rgb(203, 213, 225);
+    line-height: 1.6;
+}
+
+.store-product-card {
+    position: relative;
+    padding: 18px;
+    border-radius: 24px;
+    border: 1px solid rgba(59, 130, 246, 0.18);
+    background:
+        radial-gradient(circle at top, rgba(59, 130, 246, 0.16), transparent 34%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.96));
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.28);
+    text-align: left;
+    
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.store-product-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(96, 165, 250, 0.42);
+    box-shadow: 0 24px 40px rgba(37, 99, 235, 0.22);
+}
+
+.store-product-media {
+    display: grid;
+    place-items: center;
+    height: 210px;
+    margin-bottom: 16px;
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at top, rgba(59, 130, 246, 0.12), transparent 38%),
+        rgb(15, 23, 42);
+    overflow: hidden; 
+}
+
+.store-product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /*chỉnh ảnh bộ sưu tập nổi bật*/
+    margin-bottom: 0;
+    transform: none;
+}
+
+.store-product-title {
+    color: rgb(248, 250, 252);
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    text-align: center;
+    
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.store-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.store-price-current {
+    color: rgb(220, 38, 38);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.store-price-current > span:first-child {
+    color: rgb(226, 232, 240) !important;
+}
+
+.store-card-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    gap: 10px;
+}
+
+.shop-empty-state {
+    grid-column: 1 / -1;
+    min-height: 220px;
+    padding: 28px;
+    border-radius: 24px;
+    border: 1px dashed rgba(148, 163, 184, 0.4);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.92));
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.shop-empty-state.compact {
+    min-height: 160px;
+}
+
+.shop-empty-state strong {
+    color: var(--text-dark);
+    font-size: 24px;
+}
+
+.shop-empty-copy {
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 48ch;
+    margin-top: 10px;
+}
+
+.shop-empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.admin-home {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.order-history-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.order-history-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.order-history-list {
+    display: grid;
+    gap: 16px;
+}
+
+.order-history-card {
+    padding: 22px;
+    border-radius: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--text-dark);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.1);
+}
+
+.order-history-topline,
+.order-history-bottomline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.order-history-topline small {
+    display: inline-block;
+    color: rgb(37, 99, 235);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    margin-bottom: 6px;
+}
+
+.order-history-topline strong {
+    display: block;
+    color: var(--text-dark);
+}
+
+.order-history-items {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 16px 0;
+}
+
+.order-history-total {
+    display: block;
+    color: rgb(22, 163, 74);
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 6px;
+}
+
+.order-history-note {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.order-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 112px;
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.order-status-pill.pending {
+    background: rgba(245, 158, 11, 0.14);
+    color: rgb(217, 119, 6);
+}
+
+.order-status-pill.done {
+    background: rgba(34, 197, 94, 0.14);
+    color: rgb(22, 163, 74);
+}
+
+.order-empty-state {
+    min-height: 260px;
+}
+
+@media (max-width: 1200px) {
+    .storefront-header-top {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "left actions"
+            "brand brand";
+    }
+
+    .storefront-header-left {
+        grid-area: left;
+    }
+
+    .storefront-header-actions {
+        grid-area: actions;
+    }
+
+    .storefront-branding {
+        grid-area: brand;
+        justify-self: center;
+    }
+
+    .storefront-category-bar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .shop-category-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .shop-benefit-grid,
+    .shop-announcement-bar,
+    .shop-kpi-grid,
+    .shop-promo-strip,
+    .order-history-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 960px) {
+    .storefront-header-top {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "brand"
+            "left"
+            "actions";
+        justify-items: center;
+    }
+
+    .storefront-header-left,
+    .storefront-header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .storefront-searchbox {
+        min-width: 0;
+        width: min(460px, 100%);
+    }
+
+    .shop-hero-panels,
+    .shop-trust-panels {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-catalog-toolbar {
+        align-items: flex-start;
+    }
+
+    .shop-catalog-controls {
+        width: 100%;
+    }
+
+    .shop-search-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 720px) {
+    .storefront-header-shell {
+        border-radius: 20px;
+    }
+
+    .storefront-header-top {
+        padding: 20px 18px 18px;
+    }
+
+    .storefront-branding {
+        width: min(100%, 320px);
+    }
+
+    .storefront-brand-logo {
+        max-width: 320px;
+    }
+
+    .storefront-header-left {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .storefront-icon-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 22px;
+    }
+
+    .storefront-category-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .storefront-category-link {
+        min-height: 58px;
+        font-size: 13px;
+    }
+
+    .store-home-banner {
+        height: 260px;
+    }
+
+    /* Đảm bảo trên điện thoại hiện 2 cột thẻ bấm cho gọn */
+    .shop-category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .shop-announcement-bar,
+    .shop-benefit-grid,
+    .shop-kpi-grid,
+    .shop-promo-strip,
+    .order-history-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-hero-card,
+    .shop-side-card,
+    .shop-catalog-panel,
+    .shop-trust-card {
+        padding: 20px;
+    }
+
+    .shop-hero-card h1 {
+        max-width: none;
+    }
+
+    .shop-catalog-controls,
+    .store-card-actions {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    .shop-empty-actions,
+    .order-history-bottomline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 520px) {
+    .storefront-header-actions {
+        gap: 10px;
+    }
+
+    .storefront-category-bar {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Làm nổi bật thanh tìm kiếm ở trang chủ */
+.shop-search-box input {
+    background-color: rgb(96, 47, 47) !important;
+    border: 1px solid rgb(113, 121, 11) !important;
+    box-shadow: 0 4px 15px rgba(207, 239, 65, 0.06) !important;
+}
+
+.shop-search-box input:focus {
+    border-color: rgb(0, 110, 255) !important;
+    box-shadow: 0 0 12px rgba(0, 110, 255, 0.2) !important;
+}
+
+/* ================= BỘ LỌC DANH MỤC TỰ TẠO (CUSTOM DROPDOWN) ================= */
+.custom-category-dropdown {
+    position: relative;
+    min-width: 260px;
+    z-index: 50;
+}
+
+.dropdown-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgb(0, 0, 0);
+    border: 1px solid rgb(130, 115, 31);
+    border-radius: 14px;
+    color: var(--text-dark);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.dropdown-trigger:hover {
+    border-color: rgb(0, 110, 255);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: rgb(0, 0, 0);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: none; 
+    flex-direction: column;
+    padding: 8px 0;
+    overflow: visible;
+}
+
+.dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-menu li {
+    position: relative;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--text-dark);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-menu li:hover {
+    background: rgba(0, 110, 255, 0.08);
+    color: rgb(0, 110, 255);
+}
+
+.menu-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* HIỆU ỨNG MENU BAY NGANG (SUBMENU) */
+.submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 220px;
+    background: rgb(255, 255, 255);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    padding: 8px 0;
+    margin-left: 5px;
+}
+
+.has-submenu:hover > .submenu {
+    display: flex;
+}
+
+/* ================= THIẾT QUÂN LUẬT GIAO DIỆN GRID (CHỐNG TRÔI & COMPACT) ================= */
+.store-product-card {
+    padding: 12px !important;
+    border-radius: 16px !important;
+}
+
+.store-product-media {
+    height: 160px !important; 
+    margin-bottom: 10px !important;
+}
+
+.store-product-title {
+    font-size: 15px !important; 
+    min-height: 40px !important;
+}
+
+/* Phần Sản phẩm nổi bật & Deal đang chạy: Ép 4 cột */
+.top-selling-grid.store-grid,
+#saleProductsGrid.sale-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+/* Phần Khám phá toàn bộ: Tự động lấp kín màn hình bằng các card nhỏ */
+.product-grid.display-products {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
