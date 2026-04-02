@@ -256,68 +256,84 @@ injectModals();
 registerModalDismiss();
 
 // Ham applyJewelryCategoryLabels: ap dung logic tuong ung.
+// Ham applyJewelryCategoryLabels: doi text giao dien sang jewelry.
 function applyJewelryCategoryLabels() {
     const magLabel = document.querySelector('#rowMdlMag .info-label');
     const ammoLabel = document.querySelector('#rowMdlAmmo .info-label');
     const accLabel = document.getElementById('lblMdlAcc');
+
     const categorySelect = document.getElementById('formCategory');
     const formId = document.getElementById('formId');
+
     const formMagLabel = document.querySelector('#groupFormMag label');
     const formAmmoLabel = document.querySelector('#groupFormAmmo label');
     const formAccLabel = document.getElementById('lblFormAcc');
+
     const formMag = document.getElementById('formMag');
     const formAmmo = document.getElementById('formAmmo');
     const formAcc = document.getElementById('formAcc');
-    if (magLabel) magLabel.innerText = 'Kich co:';
-    if (ammoLabel) ammoLabel.innerText = 'Chat lieu:';
-    if (accLabel) accLabel.innerText = 'Dac diem:';
 
+    // Đổi label trong modal chi tiết sản phẩm
+    if (magLabel) magLabel.innerText = 'Kích cỡ:';
+    if (ammoLabel) ammoLabel.innerText = 'Chất liệu:';
+    if (accLabel) accLabel.innerText = 'Đặc điểm:';
+
+    // Đổi danh mục admin sang jewelry
     if (categorySelect) {
         categorySelect.innerHTML = `
-            <optgroup label="Nhan">
-                <option value="nhanbac">Nhan bac</option>
-                <option value="nhanvang">Nhan vang</option>
-                <option value="nhanmoissanite">Nhan moissanite</option>
-                <option value="nhandaquy">Nhan da quy</option>
+            <optgroup label="Nhẫn">
+                <option value="nhanbac">Nhẫn bạc</option>
+                <option value="nhanvang">Nhẫn vàng</option>
+                <option value="nhanmoissanite">Nhẫn moissanite</option>
+                <option value="nhandaquy">Nhẫn đá quý</option>
             </optgroup>
-            <optgroup label="Day chuyen">
-                <option value="daychuyenbac">Day chuyen bac</option>
-                <option value="daychuyenvang">Day chuyen vang</option>
-                <option value="matday">Mat day chuyen</option>
+
+            <optgroup label="Dây chuyền">
+                <option value="daychuyenbac">Dây chuyền bạc</option>
+                <option value="daychuyenvang">Dây chuyền vàng</option>
+                <option value="matday">Mặt dây chuyền</option>
             </optgroup>
-            <optgroup label="Lac tay">
-                <option value="lactay">Lac tay</option>
-                <option value="vongtay">Vong tay</option>
+
+            <optgroup label="Lắc tay & Vòng tay">
+                <option value="lactay">Lắc tay</option>
+                <option value="vongtay">Vòng tay</option>
             </optgroup>
-            <optgroup label="Bong tai">
-                <option value="bongtai-dinhda">Bong tai dinh da</option>
-                <option value="bongtai-ngoctrai">Bong tai ngoc trai</option>
-                <option value="bongtai-toigian">Bong tai toi gian</option>
+
+            <optgroup label="Bông tai">
+                <option value="bongtai-dinhda">Bông tai đính đá</option>
+                <option value="bongtai-ngoctrai">Bông tai ngọc trai</option>
+                <option value="bongtai-toigian">Bông tai tối giản</option>
             </optgroup>
-            <optgroup label="Trang suc nam">
-                <option value="nhannam">Nhan nam</option>
-                <option value="daychuyennam">Day chuyen nam</option>
-                <option value="lactaynam">Lac tay nam</option>
+
+            <optgroup label="Trang sức nam">
+                <option value="nhannam">Nhẫn nam</option>
+                <option value="daychuyennam">Dây chuyền nam</option>
+                <option value="lactaynam">Lắc tay nam</option>
             </optgroup>
-            <optgroup label="Trang suc cuoi">
-                <option value="nhancuoi">Nhan cuoi</option>
-                <option value="nhancapdoi">Nhan cap doi</option>
-                <option value="quatang">Qua tang ky niem</option>
+
+            <optgroup label="Trang sức cưới">
+                <option value="nhancuoi">Nhẫn cưới</option>
+                <option value="nhancapdoi">Nhẫn cặp đôi</option>
+                <option value="quatang">Quà tặng kỷ niệm</option>
             </optgroup>
-            <optgroup label="Phu kien">
-                <option value="hoptrangsuc">Hop trang suc</option>
-                <option value="khanlau">Khan lau trang suc</option>
-                <option value="phukien">Phu kien chung</option>
+
+            <optgroup label="Phụ kiện">
+                <option value="hoptrangsuc">Hộp trang sức</option>
+                <option value="khanlau">Khăn lau trang sức</option>
+                <option value="phukien">Phụ kiện chung</option>
             </optgroup>
         `;
     }
 
-    if (formId) formId.placeholder = 'VD: RING05, NEC02...';
-    if (formMagLabel) formMagLabel.innerText = 'Kich co / size';
-    if (formAmmoLabel) formAmmoLabel.innerText = 'Chat lieu';
-    if (formAccLabel) formAccLabel.innerText = 'Dac diem noi bat';
+    // Đổi placeholder / label của form admin
+    if (formId) formId.placeholder = 'VD: RING05, NEC02, EAR03...';
+
+    if (formMagLabel) formMagLabel.innerText = 'Kích cỡ / Size';
+    if (formAmmoLabel) formAmmoLabel.innerText = 'Chất liệu';
+    if (formAccLabel) formAccLabel.innerText = 'Đặc điểm nổi bật';
+
     if (formMag) formMag.placeholder = 'VD: Ni 7, 45cm, Free size...';
-    if (formAmmo) formAmmo.placeholder = 'VD: Bac 925, Vang 18K...';
-    if (formAcc) formAcc.placeholder = 'VD: Dinh da CZ, khac ten, charm trai tim...';
+    if (formAmmo) formAmmo.placeholder = 'VD: Bạc 925, Vàng 18K, Vàng trắng...';
+    if (formAcc) formAcc.placeholder = 'VD: Đính đá CZ, moissanite, khắc tên, charm trái tim...';
 }
 applyJewelryCategoryLabels();
