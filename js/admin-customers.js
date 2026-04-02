@@ -214,6 +214,12 @@ window.sendVoucher = function(email, name) {
 };
 
 // Ham toggleUserStatus: bat/tat logic tuong ung.
+/*Click nút khóa/mở
+→ tìm user
+→ nếu locked → mở
+→ nếu active → hỏi confirm → khóa
+→ lưu lại localStorage
+→ render lại UI*/
 window.toggleUserStatus = function(email, name) {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     

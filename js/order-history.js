@@ -57,7 +57,7 @@ function buildOrderHistoryCard(order) {
                     <span class="order-history-total">${typeof formatMoney === 'function' ? formatMoney(order.total) : `${order.total}$`}</span>
                     <span class="order-history-note" style="color: rgb(100, 116, 139);">${order.note || 'Đơn hàng được lưu từ giỏ hàng.'}</span>
                 </div>
-                <button class="tactical-btn tactical-btn-secondary compact" onclick="reorderFromHistory('${order.id}')">Mua lại</button>
+                <button class="tactical-btn tactical-btn-secondary compact" onclick="reorderFromHistory('${order.id}')">Mua lại sản phẩm</button>
             </div>
         </article>
     `;

@@ -1,11 +1,15 @@
 /**
- * Module: cart.js
- * Purpose: Shopping cart state, rendering, voucher apply, checkout trigger.
- * Main entry points: openCart(), closeCart(), renderCart(), checkout().
+Giỏ hàng (cart)
+- thêm sản phẩm
+- update số lượng
+- áp mã giảm giá
+- render UI
+- checkout
  */
-let currentCart = [];
-window.currentCart = currentCart;
-let appliedVoucher = null;
+// xác định key lưu cart trong db
+let currentCart = []; //ds sp trong giỏ
+window.currentCart = currentCart; 
+let appliedVoucher = null; //mã giảm giá đang dùng
 window.appliedVoucher = appliedVoucher;
 
 // Ham getCartStorageKey: lay logic tuong ung.
@@ -13,34 +17,39 @@ function getCartStorageKey() {
     return typeof getCurrentUserCartKey === 'function' ? getCurrentUserCartKey() : 'cart:guest';
 }
 
+/*- đảm bảo product tồn tại
+- quantity hợp lệ
+- không vượt stock */
 // Ham normalizeCartItems: chuan hoa logic tuong ung.
 function normalizeCartItems(items) {
-    return (Array.isArray(items) ? items : [])
+    return (Array.isArray(items) ? items : []) // nếu items là mảng thì ok còn ko trả về mảng rỗng tránh bị lỗi
         .map(item => {
             const productId = item.productId || (item.product && item.product.id);
-            const product = typeof findProductById === 'function' ? findProductById(productId) : null;
-            const quantity = Number(item.quantity || 0);
+            const product = typeof findProductById === 'function' ? findProductById(productId) : null; /*gọi hàm tìm sp, kco thì trả null
+                                                                                                        đồng bộ cart vs product tránh product bị xóa mà vẫn còn
+                                                                                                        trong cart */
+            const quantity = Number(item.quantity || 0); //ép về số
 
             if (!product || quantity <= 0) return null;
 
             return {
                 product,
-                quantity: Math.min(quantity, product.stock || quantity)
+                quantity: Math.min(quantity, product.stock || quantity) // giới hạn theo stock user mua 10sp sẽ sửa tự động thành 5
             };
         })
         .filter(Boolean)
-        .filter(item => item.quantity > 0);
+        .filter(item => item.quantity > 0); //lọc null và các sp có sl = 0
 }
 
 // Save cart for current user and optionally refresh UI widgets.
 // Ham persistCartState: luu ben vung logic tuong ung.
 function persistCartState(shouldRender = true) {
     const serialized = currentCart.map(item => ({
-        productId: item.product.id,
+        productId: item.product.id, //chỉ lấy sl sp và ID
         quantity: item.quantity
     }));
 
-    localStorage.setItem(getCartStorageKey(), JSON.stringify(serialized));
+    localStorage.setItem(getCartStorageKey(), JSON.stringify(serialized)); //biến mảng object thành chuỗi JSON
 
     if (shouldRender) {
         renderCart();
@@ -121,8 +130,8 @@ function updateCartSummary(totalItems, totalValue) {
     const discountRow = document.getElementById('cartDiscountRow');
     const discountVal = document.getElementById('cartDiscountValue');
     const discountLbl = document.getElementById('cartDiscountLabel');
-    const finalRow = document.getElementById('cartFinalTotalRow');
-    const finalSum = document.getElementById('cartFinalTotalSum');
+    const finalRow = document.getElementById('cartFinalTotalRow'); //dòng tổng tiền sau giảm
+    const finalSum = document.getElementById('cartFinalTotalSum'); //số tiền cuối
 
     if (discountRow && finalRow && appliedVoucher && totalItems > 0) {
         discountRow.classList.remove('hide-menu');
@@ -207,7 +216,7 @@ function addToCart() {
         return;
     }
 
-    showToast(`Da them ${quantity} x ${currentSelectedProduct.name} vao gio hang!`);
+    showToast(`Đã thêm ${quantity} x ${currentSelectedProduct.name} vào giỏ hàng!`);
     closeModal();
     renderCart();
 }
@@ -218,7 +227,7 @@ window.addToCart = addToCart;
 window.quickAddToCart = function(productId) {
     const product = typeof findProductById === 'function' ? findProductById(productId) : null;
     if (!product) {
-        showToast('Khong tim thay san pham de them nhanh.');
+        showToast('Không tìm thấy sản phẩm.');
         return;
     }
 
@@ -231,7 +240,7 @@ window.quickAddToCart = function(productId) {
         return;
     }
 
-    showToast(`Da them nhanh ${product.name} vao gio hang.`);
+    showToast(`Đã thêm nhanh ${product.name} vào giỏ hàng.`);
     renderCart();
 };
 

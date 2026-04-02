@@ -4,6 +4,7 @@
  * Main entry points: renderAdminProductTable(), openAddProductForm(), saveProduct().
  */
 // Ham renderAdminProductTable: hien thi logic tuong ung.
+/*Lấy table → clear → filter theo keyword → render từng row → update header */
 window.renderAdminProductTable = function(keyword = '', highlightId = '') {
     const tbody = document.getElementById('adminTableBody');
     if(!tbody) return;
@@ -51,9 +52,9 @@ window.searchAdminTable = function(keyword) {
     renderAdminProductTable(keyword);
 };
 
-// Ham deleteWeapon: xoa logic tuong ung.
+// Ham deletePrduct: xoa sản phẩm trong admin(UI + data + render lại bảng) 
 window.deleteWeapon = function(id, btnElement) {
-    const confirmDelete = confirm('Cảnh báo: Xác nhận tiêu hủy toàn bộ dữ liệu vũ khí này khỏi kho lưu trữ?');
+    const confirmDelete = confirm('Cảnh báo: Xác nhận xóa toàn bộ sản phẩm khỏi danh mục? ');
     if(confirmDelete) {
         const row = btnElement.closest('tr');
         if(row) {
@@ -90,34 +91,91 @@ window.deleteWeapon = function(id, btnElement) {
 // Ham toggleAdminFields: bat/tat logic tuong ung.
 window.toggleAdminFields = function() {
     const cat = document.getElementById('formCategory').value;
-    const ammoGroup = document.getElementById('groupFormAmmo');
-    const magGroup = document.getElementById('groupFormMag');
-    const accGroup = document.getElementById('groupFormAcc');
-    const accLabel = document.getElementById('lblFormAcc');
-    const accInput = document.getElementById('formAcc');
 
-    if(ammoGroup) ammoGroup.style.display = 'none';
-    if(magGroup) magGroup.style.display = 'none';
-    if(accGroup) accGroup.style.display = 'none';
+    const materialGroup = document.getElementById('groupFormMaterial');
+    const sizeGroup = document.getElementById('groupFormSize');
+    const detailGroup = document.getElementById('groupFormDetail');
 
-    const isWeapon = !['danduoc', 'phongve', 'phukien'].includes(cat);
+    const detailLabel = document.getElementById('lblFormDetail');
+    const detailInput = document.getElementById('formDetail');
 
-    if (isWeapon) {
-        if(ammoGroup) ammoGroup.style.display = 'flex';
-        if(magGroup) magGroup.style.display = 'flex';
-        if(accGroup) accGroup.style.display = 'flex';
-        if(accLabel) accLabel.innerText = 'PHỤ KIỆN ĐI KÈM';
-        if(accInput) accInput.placeholder = 'VD: Ống ngắm Holo, Tay cầm...';
-    } else if (cat === 'danduoc') {
-        if(ammoGroup) ammoGroup.style.display = 'flex';
-    } else if (cat === 'phukien') {
-        if(accGroup) accGroup.style.display = 'flex';
-        if(accLabel) accLabel.innerText = 'TÍCH HỢP VỚI';
-        if(accInput) accInput.placeholder = 'VD: M4A1, Glock 17... (Bỏ trống nếu gắn được mọi súng)';
-    } else {
-        if(accGroup) accGroup.style.display = 'flex';
-        if(accLabel) accLabel.innerText = 'THÔNG SỐ KỸ THUẬT';
-        if(accInput) accInput.placeholder = 'VD: Cấp độ chống đạn, Độ bền...';
+    // Ẩn hết trước
+    if(materialGroup) materialGroup.style.display = 'none';
+    if(sizeGroup) sizeGroup.style.display = 'none';
+    if(detailGroup) detailGroup.style.display = 'none';
+
+    //  NHẪN (nhan*)
+    if (cat.startsWith('nhan')) {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(sizeGroup) sizeGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'ĐÁ / KIỂU THIẾT KẾ';
+        if(detailInput) detailInput.placeholder = 'VD: Moissanite, kim cương, kiểu halo...';
+    }
+
+    //  DÂY CHUYỀN / MẶT DÂY
+    else if (cat.startsWith('daychuyen') || cat === 'matday') {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'CHIỀU DÀI / MẶT DÂY';
+        if(detailInput) detailInput.placeholder = 'VD: 45cm, mặt trái tim, chữ cái...';
+    }
+
+    //  BÔNG TAI
+    else if (cat.startsWith('bongtai')) {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'KIỂU BÔNG TAI';
+        if(detailInput) detailInput.placeholder = 'VD: Đính đá, ngọc trai, tối giản...';
+    }
+
+    //  LẮC TAY / VÒNG TAY
+    else if (cat === 'lactay' || cat === 'vongtay' || cat === 'lactaynam') {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(sizeGroup) sizeGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'KIỂU DÁNG';
+        if(detailInput) detailInput.placeholder = 'VD: Charm, trơn, đính đá...';
+    }
+
+    //  TRANG SỨC NAM
+    else if (cat.includes('nam')) {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(sizeGroup) sizeGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'PHONG CÁCH';
+        if(detailInput) detailInput.placeholder = 'VD: Mạnh mẽ, tối giản, luxury...';
+    }
+
+    //  CƯỚI / QUÀ TẶNG
+    else if (cat === 'nhancuoi' || cat === 'nhancapdoi' || cat === 'quatang') {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'Ý NGHĨA / THÔNG ĐIỆP';
+        if(detailInput) detailInput.placeholder = 'VD: Khắc tên, ngày kỷ niệm...';
+    }
+
+    //  PHỤ KIỆN
+    else if (cat === 'hoptrangsuc' || cat === 'khanlau' || cat === 'phukien') {
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'MÔ TẢ PHỤ KIỆN';
+        if(detailInput) detailInput.placeholder = 'VD: Hộp nhung cao cấp, khăn lau bạc...';
+    }
+
+    //  DEFAULT
+    else {
+        if(materialGroup) materialGroup.style.display = 'flex';
+        if(detailGroup) detailGroup.style.display = 'flex';
+
+        if(detailLabel) detailLabel.innerText = 'THÔNG TIN SẢN PHẨM';
+        if(detailInput) detailInput.placeholder = 'Nhập thông tin...';
     }
 };
 
@@ -126,17 +184,27 @@ window.openAddProductForm = function() {
     document.getElementById('adminFormTitle').innerText = 'THÊM SẢN PHẨM MỚI';
     document.getElementById('formSaveMode').value = 'add';
     
-    document.getElementById('formCategory').value = 'sungngan-auto';
+    //  default category (jewelry)
+    document.getElementById('formCategory').value = 'nhanbac';
+
+    //  ID
     document.getElementById('formId').value = '';
     document.getElementById('formId').disabled = false;
+
+    //  thông tin cơ bản
     document.getElementById('formName').value = '';
     document.getElementById('formPrice').value = '';
     document.getElementById('formStock').value = '';
-    document.getElementById('formAmmo').value = '';
-    document.getElementById('formMag').value = '';
-    document.getElementById('formAcc').value = '';
+
+    //  field jewelry (đổi từ ammo/mag/acc)
+    document.getElementById('formMaterial').value = '';   // chất liệu
+    document.getElementById('formSize').value = '';       // size (ni)
+    document.getElementById('formDetail').value = '';     // mô tả / đá
+
+    //  ảnh
     document.getElementById('formImg').value = '';
 
+    //  supplier
     const supplierSelect = document.getElementById('formSupplier');
     if(supplierSelect) {
         const suppliers = JSON.parse(localStorage.getItem('supplierData')) || [];
@@ -145,8 +213,10 @@ window.openAddProductForm = function() {
         supplierSelect.value = '';
     }
 
+    //  cập nhật field theo category
     toggleAdminFields();
 
+    //  mở modal
     const modal = document.getElementById('adminFormModal');
     if(modal) modal.classList.remove('hide-menu');
 };
@@ -194,24 +264,40 @@ window.closeAdminForm = function() {
 window.saveProduct = function() {
     const mode = document.getElementById('formSaveMode').value;
     const subcategory = document.getElementById('formCategory').value;
-    
+
     let category = subcategory;
-    if(subcategory.startsWith('sungngan')) category = 'sungngan';
-    else if(subcategory.startsWith('sungtruong') || subcategory === 'sungbantia') category = 'sungtruong';
-    else if(subcategory.startsWith('smg')) category = 'smg';
-    else if(subcategory.startsWith('sungmay') || ['phunlua', 'khonggiat', 'phongtenlua', 'phongluu', 'phao'].includes(subcategory)) category = 'hangnang';
+    if (['nhanbac', 'nhanvang', 'nhanmoissanite', 'nhandaquy'].includes(subcategory)) {
+        category = 'nhan';
+    } else if (['daychuyenbac', 'daychuyenvang', 'matday'].includes(subcategory)) {
+        category = 'daychuyen';
+    } else if (['lactay', 'vongtay'].includes(subcategory)) {
+        category = 'lactay';
+    } else if (subcategory.startsWith('bongtai')) {
+        category = 'bongtai';
+    } else if (['nhannam', 'daychuyennam', 'lactaynam'].includes(subcategory)) {
+        category = 'trangsucnam';
+    } else if (['nhancuoi', 'nhancapdoi', 'quatang'].includes(subcategory)) {
+        category = 'trangsuccuoi';
+    } else if (['hoptrangsuc', 'khanlau', 'phukien'].includes(subcategory)) {
+        category = 'phukien';
+    }
 
     const id = document.getElementById('formId').value.trim();
     const name = document.getElementById('formName').value.trim();
-    const price = parseInt(document.getElementById('formPrice').value);
-    const stock = parseInt(document.getElementById('formStock').value);
-    const ammo = document.getElementById('formAmmo').value.trim();
-    const mag = document.getElementById('formMag').value.trim();
-    const acc = document.getElementById('formAcc').value.trim();
-    const img = document.getElementById('formImg').value.trim();
-    const supplierId = document.getElementById('formSupplier') ? document.getElementById('formSupplier').value : '';
+    const price = parseInt(document.getElementById('formPrice').value, 10);
+    const stock = parseInt(document.getElementById('formStock').value, 10);
 
-    if(!id || !name || isNaN(price) || isNaN(stock)) {
+    // đổi key cho match jewelry
+    const material = document.getElementById('formMaterial').value.trim();
+    const size = document.getElementById('formSize').value.trim();
+    const detail = document.getElementById('formDetail').value.trim();
+
+    const img = document.getElementById('formImg').value.trim();
+    const supplierId = document.getElementById('formSupplier')
+        ? document.getElementById('formSupplier').value
+        : '';
+
+    if (!id || !name || isNaN(price) || isNaN(stock)) {
         showToast('Lỗi: Cần điền đầy đủ Mã SP, Tên, Giá và Số hàng!');
         return;
     }
@@ -224,12 +310,13 @@ window.saveProduct = function() {
     const normalizedId = id.toUpperCase();
     const resolvedImg = img || (window.productFallbackImage || '../product-fallback.svg');
 
-    if(mode === 'add') {
+    if (mode === 'add') {
         const exist = dbProducts.find(p => p.id === normalizedId);
-        if(exist) {
+        if (exist) {
             showToast('Lỗi: Mã sản phẩm này đã tồn tại trong kho!');
             return;
         }
+
         dbProducts.push({
             id: normalizedId,
             name,
@@ -237,10 +324,18 @@ window.saveProduct = function() {
             subcategory,
             price,
             stock,
-            ammo,
-            mag,
-            acc,
-            supplierId: supplierId,
+
+            // giữ lại key cũ để không vỡ code cũ nếu chỗ khác vẫn đang đọc
+            ammo: material,
+            mag: size,
+            acc: detail,
+
+            // thêm key mới cho đúng nghĩa jewelry
+            material,
+            size,
+            detail,
+
+            supplierId,
             img: resolvedImg,
             collection: 'Mới thêm',
             tagline: 'Sản phẩm vừa được admin cập nhật vào catalog storefront.',
@@ -248,10 +343,11 @@ window.saveProduct = function() {
             featured: false,
             createdAt: new Date().toISOString()
         });
+
         showToast('Đã nhập kho sản phẩm mới thành công!');
     } else {
         const index = dbProducts.findIndex(p => p.id === normalizedId);
-        if(index > -1) {
+        if (index > -1) {
             dbProducts[index] = {
                 ...dbProducts[index],
                 id: normalizedId,
@@ -260,13 +356,20 @@ window.saveProduct = function() {
                 subcategory,
                 price,
                 stock,
-                ammo,
-                mag,
-                acc,
-                supplierId: supplierId,
+
+                ammo: material,
+                mag: size,
+                acc: detail,
+
+                material,
+                size,
+                detail,
+
+                supplierId,
                 img: resolvedImg
             };
-            showToast('Đã cập nhật thông số thành công!');
+
+            showToast('Đã cập nhật thông tin sản phẩm thành công!');
         }
     }
 
@@ -274,11 +377,11 @@ window.saveProduct = function() {
     if (typeof hydrateCartFromStorage === 'function') hydrateCartFromStorage();
 
     closeAdminForm();
-    
+
     const adminSearchInput = document.getElementById('adminSearchInput');
     const keyword = adminSearchInput ? adminSearchInput.value : '';
     renderAdminProductTable(keyword, normalizedId);
-    
+
     renderProducts(typeof currentStoreCategory === 'string' ? currentStoreCategory : 'all');
     renderTopSelling();
     if (typeof renderSaleProducts === 'function') renderSaleProducts();

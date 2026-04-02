@@ -232,7 +232,7 @@ function formatPromotionRankValue(value, unit) {
     return `${numericValue}`;
 }
 
-// Ham injectPromotionModal: chen logic tuong ung.
+// Tạo HTML của form khuyến mãi và gắn vào trang (DOM)
 function injectPromotionModal() {
     if (document.getElementById('adminPromotionFormModal')) return;
 
@@ -309,11 +309,15 @@ function injectPromotionModal() {
 }
 injectPromotionModal();
 
-// Ham openAddPromotionForm: mo logic tuong ung.
+/*Click "Thêm khuyến mãi"
+→ set mode = add
+→ reset toàn bộ input
+→ generate ID mới
+→ mở modal*/ 
 window.openAddPromotionForm = function () {
     document.getElementById('adminPromotionFormTitle').innerText = 'THÊM KHUYẾN MÃI';
     document.getElementById('formPromotionSaveMode').value = 'add';
-    document.getElementById('formPromotionId').value = getNextPromotionId();
+    document.getElementById('formPromotionId').value = getNextPromotionId(); //tạo id mới vd: km1 km2
     document.getElementById('formPromotionId').disabled = false;
     document.getElementById('formPromotionCode').value = '';
     document.getElementById('formPromotionTitle').value = '';
@@ -431,7 +435,8 @@ function updatePromotionStats(promotions) {
     if (bannerEl) bannerEl.innerText = bannerCount;
 }
 
-// Ham renderAdminPromotions: hien thi logic tuong ung.
+// Ham renderAdminPromotions: Hiển thị danh sách promotion + search + highlight + update dashboard
+/*Hiển thị danh sách promotion + search + highlight + update dashboard*/
 window.renderAdminPromotions = function (keyword = '', highlightId = '') {
     const promotions = getPromotionData();
     const tbody = document.getElementById('promotionTableBody');
@@ -489,22 +494,22 @@ window.searchAdminPromotions = function (keyword) {
     renderAdminPromotions(keyword);
 };
 
-// Ham togglePromotionStatus: bat/tat logic tuong ung.
+// Ham togglePromotionStatus: bat/tat khuyen mai logic tuong ung.
 window.togglePromotionStatus = function (id) {
     const promotions = getPromotionData();
-    const promotionIndex = promotions.findIndex(p => p.id === id);
-    if (promotionIndex === -1) return;
+    const promotionIndex = promotions.findIndex(p => p.id === id); //tìm vị trí promotion trong mảng
+    if (promotionIndex === -1) return; //ko tìm thấy thì dừng tránh bị lỗi 
 
-    const promotion = promotions[promotionIndex];
+    const promotion = promotions[promotionIndex]; //lấy promotion hienj tại 
     const nextStatus = promotion.status === 'Đang áp dụng' ? 'Tạm dừng' : 'Đang áp dụng';
     promotions[promotionIndex] = {
-        ...promotion,
+        ...promotion,       //update lại các thuộc tính của object cũ , chỉ cập nhật lại status
         status: nextStatus
     };
 
-    localStorage.setItem('promotionData', JSON.stringify(promotions));
+    localStorage.setItem('promotionData', JSON.stringify(promotions)); //cập nhật vào hệ thống 
     showToast(nextStatus === 'Đang áp dụng' ? 'Đã kích hoạt lại mã khuyến mãi!' : 'Đã tạm dừng mã khuyến mãi!');
 
-    const searchInput = document.getElementById('adminPromotionSearchInput');
+    const searchInput = document.getElementById('adminPromotionSearchInput'); //render lại
     renderAdminPromotions(searchInput ? searchInput.value : '');
 };

@@ -220,6 +220,7 @@ window.closeStaffForm = function() {
 };
 
 // Ham saveStaff: luu logic tuong ung.
+
 window.saveStaff = function() {
     const mode = document.getElementById('formStaffSaveMode').value;
     const id = document.getElementById('formStaffId').value.trim();
