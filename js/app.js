@@ -3,6 +3,7 @@
  * Purpose: Global UI helpers (toast, sidebar, view switch, inbox widget).
  * Main entry points: renderSidebar(), switchMenu(), openInbox(), closeInbox().
  */
+// Ham showToast: hien thi logic tuong ung.
 function showToast(message) {
     let container = document.querySelector('.toast-container');
     if (!container) {
@@ -23,6 +24,7 @@ function showToast(message) {
 }
 
 // Core view router: switch visible section and optionally call a renderer.
+// Ham switchMenu: chuyen doi logic tuong ung.
 function switchMenu(element, viewId, renderFuncName) {
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     if (element) element.classList.add('active');
@@ -45,6 +47,7 @@ function switchMenu(element, viewId, renderFuncName) {
 }
 
 // Render sidebar menu by current role, then sync quick counters.
+// Ham renderSidebar: hien thi logic tuong ung.
 function renderSidebar() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) {
@@ -109,6 +112,7 @@ function renderSidebar() {
     }
 }
 
+// Ham updateInboxCounter: cap nhat logic tuong ung.
 function updateInboxCounter() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) return;
@@ -126,18 +130,21 @@ function updateInboxCounter() {
     }
 }
 
+// Ham openInbox: mo logic tuong ung.
 function openInbox() {
     renderInbox();
     const modal = document.getElementById('inboxModal');
     if (modal) modal.classList.remove('hide-menu');
 }
 
+// Ham closeInbox: dong logic tuong ung.
 function closeInbox() {
     const modal = document.getElementById('inboxModal');
     if (modal) modal.classList.add('hide-menu');
 }
 
 // Build inbox items from localStorage and paint unread badges.
+// Ham renderInbox: hien thi logic tuong ung.
 function renderInbox() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser) return;
@@ -178,6 +185,7 @@ function renderInbox() {
     updateInboxCounter();
 }
 
+// Ham markAsRead: danh dau logic tuong ung.
 function markAsRead(id) {
     let notifications = JSON.parse(localStorage.getItem('notificationData')) || [];
     const idx = notifications.findIndex(n => n.id === id);
@@ -194,4 +202,5 @@ window.renderInbox = renderInbox;
 window.markAsRead = markAsRead;
 window.updateInboxCounter = updateInboxCounter;
 
+// Ham openPersonalInfo: mo logic tuong ung.
 function openPersonalInfo() {}

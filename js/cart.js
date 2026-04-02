@@ -8,10 +8,12 @@ window.currentCart = currentCart;
 let appliedVoucher = null;
 window.appliedVoucher = appliedVoucher;
 
+// Ham getCartStorageKey: lay logic tuong ung.
 function getCartStorageKey() {
     return typeof getCurrentUserCartKey === 'function' ? getCurrentUserCartKey() : 'cart:guest';
 }
 
+// Ham normalizeCartItems: chuan hoa logic tuong ung.
 function normalizeCartItems(items) {
     return (Array.isArray(items) ? items : [])
         .map(item => {
@@ -31,6 +33,7 @@ function normalizeCartItems(items) {
 }
 
 // Save cart for current user and optionally refresh UI widgets.
+// Ham persistCartState: luu ben vung logic tuong ung.
 function persistCartState(shouldRender = true) {
     const serialized = currentCart.map(item => ({
         productId: item.product.id,
@@ -49,6 +52,7 @@ function persistCartState(shouldRender = true) {
 }
 
 // Pull cart from storage when page loads or cart panel opens.
+// Ham hydrateCartFromStorage: nap lai logic tuong ung.
 function hydrateCartFromStorage() {
     const stored = JSON.parse(localStorage.getItem(getCartStorageKey())) || [];
     const normalizedItems = normalizeCartItems(stored);
@@ -63,6 +67,7 @@ function hydrateCartFromStorage() {
     return currentCart;
 }
 
+// Ham addCartItem: them logic tuong ung.
 function addCartItem(product, quantity) {
     if (!product || quantity <= 0) return false;
 
@@ -85,6 +90,7 @@ function addCartItem(product, quantity) {
     return true;
 }
 
+// Ham updateCartSummary: cap nhat logic tuong ung.
 function updateCartSummary(totalItems, totalValue) {
     const totalEl = document.getElementById('cartTotalSum');
     const itemsEl = document.getElementById('cartTotalItems');
@@ -130,6 +136,7 @@ function updateCartSummary(totalItems, totalValue) {
     }
 }
 
+// Ham applyVoucher: ap dung logic tuong ung.
 window.applyVoucher = function() {
     const codeInput = document.getElementById('voucherInput');
     const msgEl = document.getElementById('voucherMessage');
@@ -167,6 +174,7 @@ window.applyVoucher = function() {
     renderCart();
 };
 
+// Ham buildCartItemMarkup: tao logic tuong ung.
 function buildCartItemMarkup(item) {
     return `
         <article class="cart-item-card">
@@ -188,6 +196,7 @@ function buildCartItemMarkup(item) {
     `;
 }
 
+// Ham addToCart: them logic tuong ung.
 function addToCart() {
     if (!currentSelectedProduct) return;
 
@@ -205,6 +214,7 @@ function addToCart() {
 
 window.addToCart = addToCart;
 
+// Ham quickAddToCart: xu ly logic tuong ung.
 window.quickAddToCart = function(productId) {
     const product = typeof findProductById === 'function' ? findProductById(productId) : null;
     if (!product) {
@@ -225,12 +235,14 @@ window.quickAddToCart = function(productId) {
     renderCart();
 };
 
+// Ham addProductToCart: them logic tuong ung.
 window.addProductToCart = function(productId, quantity = 1) {
     const product = typeof findProductById === 'function' ? findProductById(productId) : null;
     if (!product) return false;
     return addCartItem(product, quantity);
 };
 
+// Ham openCart: mo logic tuong ung.
 function openCart() {
     hydrateCartFromStorage();
     renderCart();
@@ -241,6 +253,7 @@ function openCart() {
 
 window.openCart = openCart;
 
+// Ham closeCart: dong logic tuong ung.
 function closeCart() {
     const cartModal = document.getElementById('cartModal');
     if (cartModal) cartModal.classList.add('hide-menu');
@@ -249,6 +262,7 @@ function closeCart() {
 window.closeCart = closeCart;
 
 // Render all cart items + totals and sync badge counters.
+// Ham renderCart: hien thi logic tuong ung.
 function renderCart() {
     const container = document.getElementById('cartItemsContainer');
     if (!container) return;
@@ -275,6 +289,7 @@ function renderCart() {
 
 window.renderCart = renderCart;
 
+// Ham updateCartQuantity: cap nhat logic tuong ung.
 window.updateCartQuantity = function(productId, delta) {
     const item = currentCart.find(cartItem => cartItem.product.id === productId);
     if (!item) return;
@@ -295,21 +310,23 @@ window.updateCartQuantity = function(productId, delta) {
     persistCartState();
 };
 
+// Ham removeFromCart: loai bo logic tuong ung.
 window.removeFromCart = function(productId) {
     const nextCart = currentCart.filter(item => item.product.id !== productId);
     currentCart.splice(0, currentCart.length, ...nextCart);
     persistCartState();
-    showToast('Da bo san pham khoi gio hang.');
+    showToast('Đã bỏ sản phẩm khỏi giỏ hàng.');
 };
 
 // Checkout delegates order creation to reports module and then clears cart.
+// Ham checkout: xu ly logic tuong ung.
 function checkout() {
     if (currentCart.length === 0) {
-        showToast('Gio hang dang trong!');
+        showToast('Giỏ hàng đang trống!');
         return;
     }
 
-    showToast('Dang gui yeu cau mua hang den admin...');
+    showToast('Đang gửi yêu cầu đến admin...');
 
     window.setTimeout(() => {
         const order = typeof window.recordCheckoutOrder === 'function'
@@ -356,7 +373,7 @@ function checkout() {
             renderStoreInsights();
         }
 
-        showToast(`Da gui yeu cau mua hang ${order.id} thanh cong!`);
+        showToast(`Đã gửi yêu cầu mua hàng  ${order.id} thanh cong!`);
     }, 800);
 }
 

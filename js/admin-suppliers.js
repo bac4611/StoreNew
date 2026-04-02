@@ -5,6 +5,7 @@
  */
 const mockSupplierSeedVersion = 'dngear-supplier-seed-v2';
 
+// Ham buildMockSuppliers: tao logic tuong ung.
 function buildMockSuppliers() {
     return [
         { id: 'NCC01', name: 'BACDUNG JWERELY', contact: 'Đàm Xuân Bắc', phone: '0916295600', email: 'bac@jewerly', status: 'Hoạt động' },
@@ -14,6 +15,7 @@ function buildMockSuppliers() {
     ];
 }
 
+// Ham initMockSuppliers: khoi tao logic tuong ung.
 function initMockSuppliers() {
     let suppliers = JSON.parse(localStorage.getItem('supplierData')) || [];
     if (!Array.isArray(suppliers)) suppliers = [];
@@ -39,6 +41,7 @@ function initMockSuppliers() {
 }
 initMockSuppliers();
 
+// Ham injectSupplierModal: chen logic tuong ung.
 function injectSupplierModal() {
     if(!document.getElementById('adminSupplierFormModal')) {
         const container1 = document.createElement('div');
@@ -135,6 +138,7 @@ document.addEventListener('keydown', event => {
     }
 });
 
+// Ham renderAdminSuppliers: hien thi logic tuong ung.
 window.renderAdminSuppliers = function(keyword = '') {
     const suppliers = JSON.parse(localStorage.getItem('supplierData')) || [];
     const tbody = document.getElementById('supplierTableBody');
@@ -192,10 +196,12 @@ window.renderAdminSuppliers = function(keyword = '') {
     });
 };
 
+// Ham searchAdminSuppliers: tim kiem logic tuong ung.
 window.searchAdminSuppliers = function(keyword) {
     renderAdminSuppliers(keyword);
 };
 
+// Ham deleteSupplier: xoa logic tuong ung.
 window.deleteSupplier = function(id, btnElement) {
     const confirmDelete = confirm('CẢNH BÁO: Xác nhận xóa dữ liệu nhà cung cấp này khỏi hệ thống?');
     if(confirmDelete) {
@@ -217,6 +223,7 @@ window.deleteSupplier = function(id, btnElement) {
     }
 };
 
+// Ham openAddSupplierForm: mo logic tuong ung.
 window.openAddSupplierForm = function() {
     document.getElementById('adminSupplierFormTitle').innerText = 'THÊM NHÀ CUNG CẤP';
     document.getElementById('formSupplierSaveMode').value = 'add';
@@ -233,6 +240,7 @@ window.openAddSupplierForm = function() {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham editSupplier: chinh sua logic tuong ung.
 window.editSupplier = function(id) {
     let suppliers = JSON.parse(localStorage.getItem('supplierData')) || [];
     const p = suppliers.find(item => item.id === id);
@@ -253,11 +261,13 @@ window.editSupplier = function(id) {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham closeSupplierForm: dong logic tuong ung.
 window.closeSupplierForm = function() {
     const modal = document.getElementById('adminSupplierFormModal');
     if(modal) modal.classList.add('hide-menu');
 };
 
+// Ham viewSupplierProducts: xu ly logic tuong ung.
 window.viewSupplierProducts = function(supplierId, supplierName) {
     const allProducts = typeof dbProducts !== 'undefined' ? dbProducts : [];
     
@@ -289,11 +299,13 @@ window.viewSupplierProducts = function(supplierId, supplierName) {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham closeSupplierProductModal: dong logic tuong ung.
 window.closeSupplierProductModal = function() {
     const modal = document.getElementById('supplierProductModal');
     if(modal) modal.classList.add('hide-menu');
 };
 
+// Ham saveSupplier: luu logic tuong ung.
 window.saveSupplier = function() {
     const mode = document.getElementById('formSupplierSaveMode').value;
     const id = document.getElementById('formSupplierId').value.trim();

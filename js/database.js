@@ -168,6 +168,7 @@ let currentSelectedProduct = null;
 let dbProducts = [];
 
 // Keep search tags in a stable lowercase array format for filtering.
+// Ham normalizeSearchTags: chuan hoa logic tuong ung.
 function normalizeSearchTags(value) {
     if (Array.isArray(value)) {
         return value.map(item => String(item || '').trim().toLowerCase()).filter(Boolean);
@@ -179,6 +180,7 @@ function normalizeSearchTags(value) {
 }
 
 // Normalize every product before render/save so downstream modules can trust the schema.
+// Ham normalizeProduct: chuan hoa logic tuong ung.
 function normalizeProduct(product, fallback = {}) {
     const merged = { ...fallback, ...product };
     const price = Number(merged.price);
@@ -205,6 +207,7 @@ function normalizeProduct(product, fallback = {}) {
     };
 }
 
+// Ham sanitizeStoredProducts: xu ly logic tuong ung.
 function sanitizeStoredProducts(products) {
     return (Array.isArray(products) ? products : [])
         .map(item => normalizeProduct(item))
@@ -212,6 +215,7 @@ function sanitizeStoredProducts(products) {
 }
 
 // Hydrate from localStorage, apply seed version strategy, and expose dbProducts in-memory.
+// Ham hydrateProductCatalog: nap lai logic tuong ung.
 function hydrateProductCatalog() {
     let storedProducts = sanitizeStoredProducts(JSON.parse(localStorage.getItem(productStorageKey)) || []);
     const seededProducts = defaultProductSeed.map(item => normalizeProduct(item, item));
@@ -243,6 +247,7 @@ function hydrateProductCatalog() {
 }
 
 // Single save gateway for catalog writes.
+// Ham persistProducts: luu ben vung logic tuong ung.
 function persistProducts(nextProducts = dbProducts) {
     const normalizedProducts = sanitizeStoredProducts(nextProducts);
     dbProducts.splice(0, dbProducts.length, ...normalizedProducts);
@@ -251,6 +256,7 @@ function persistProducts(nextProducts = dbProducts) {
 }
 
 // Shared auth state helpers used across app/cart/orders/profile.
+// Ham getCurrentUser: lay logic tuong ung.
 function getCurrentUser() {
     try {
         return JSON.parse(localStorage.getItem('currentUser')) || null;
@@ -259,16 +265,19 @@ function getCurrentUser() {
     }
 }
 
+// Ham saveCurrentUser: luu logic tuong ung.
 function saveCurrentUser(user) {
     localStorage.setItem('currentUser', JSON.stringify(user));
 }
 
+// Ham getCurrentUserCartKey: lay logic tuong ung.
 function getCurrentUserCartKey() {
     const currentUser = getCurrentUser();
     if (!currentUser) return 'cart:guest';
     return `cart:${currentUser.email || currentUser.username || currentUser.name || 'guest'}`;
 }
 
+// Ham initAccountsData: khoi tao logic tuong ung.
 function initAccountsData() {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     if (!Array.isArray(users) || users.length === 0) {
@@ -289,6 +298,7 @@ function initAccountsData() {
     localStorage.setItem('users', JSON.stringify(users));
 }
 
+// Ham initApp: khoi tao logic tuong ung.
 function initApp() {
     initAccountsData();
     hydrateProductCatalog();
@@ -299,12 +309,14 @@ window.getCurrentUser = getCurrentUser;
 window.saveCurrentUser = saveCurrentUser;
 window.getCurrentUserCartKey = getCurrentUserCartKey;
 window.productFallbackImage = productFallbackImage;
+// Ham findProductById: xu ly logic tuong ung.
 window.findProductById = function (id) {
     return dbProducts.find(product => product.id === id) || null;
 };
 
 initApp();
 
+// Ham normalizeProduct: chuan hoa logic tuong ung.
 function normalizeProduct(product, fallback = {}) {
     const merged = { ...fallback, ...product };
     const price = Number(merged.price);

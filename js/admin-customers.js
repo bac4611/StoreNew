@@ -5,6 +5,7 @@
  */
 const mockCustomerSeedVersion = 'dngear-customer-seed-v2';
 
+// Ham buildMockCustomers: tao logic tuong ung.
 function buildMockCustomers() {
     return [
         // Giữ lại tài khoản Test cho cậu nếu cần
@@ -25,7 +26,10 @@ function buildMockCustomers() {
         { username: 'ethan', name: 'Ethan Hunt', email: 'ethan.hunt@imf.gov', password: '123', role: 'customer', spent: 2100, status: 'active' }
     ];
 }
-
+//tạo dữ liệu khách hàng mẫu
+//lưu vào db
+//chạy khi mà version thay đổi
+// Ham initMockCustomers: khoi tao logic tuong ung.
 function initMockCustomers() {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     if (!Array.isArray(users)) users = [];
@@ -45,10 +49,12 @@ function initMockCustomers() {
 }
 initMockCustomers();
 
+// Ham getVipThreshold: lay logic tuong ung.
 function getVipThreshold() {
-    return parseInt(localStorage.getItem('vipThreshold')) || 10000;
+    return parseInt(localStorage.getItem('vipThreshold')) || 10000; // lấy giá trị vip từ db, ko có thì mặc định là 10000
 }
 
+// Ham updateVipThreshold: cap nhat logic tuong ung.
 window.updateVipThreshold = function() {
     const input = document.getElementById('vipThresholdInput');
     if(input) {
@@ -56,15 +62,16 @@ window.updateVipThreshold = function() {
         if(!isNaN(val) && val >= 0) {
             localStorage.setItem('vipThreshold', val);
             showToast('Đã thiết lập Hạn mức VIP mới: ' + val + '$');
-            renderAdminCustomers();
+            renderAdminCustomers(); //render toàn bộ khách ra ui 
         } else {
             showToast('Lỗi: Hạn mức phải là một con số hợp lệ!');
         }
     }
 };
 
+// Ham renderAdminCustomers: hien thi logic tuong ung.
 window.renderAdminCustomers = function(keyword = '') {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users = JSON.parse(localStorage.getItem('users')) || []; //lấy user từ hệ thống & ngưỡng vip
     const threshold = getVipThreshold();
     
     let customers = users.filter(u => u.role === 'customer').map(c => ({
@@ -74,7 +81,7 @@ window.renderAdminCustomers = function(keyword = '') {
         spent: c.spent || 0
     }));
 
-    customers.sort((a, b) => b.spent - a.spent);
+    customers.sort((a, b) => b.spent - a.spent); //sort theo tiền
 
     const vipContainer = document.getElementById('vip-customers-grid');
     if(vipContainer) {
@@ -149,10 +156,12 @@ window.renderAdminCustomers = function(keyword = '') {
     }
 };
 
+// Ham searchAdminCustomers: tim kiem logic tuong ung.
 window.searchAdminCustomers = function(keyword) {
     renderAdminCustomers(keyword);
 };
 
+// Ham sendVoucher: xu ly logic tuong ung.
 window.sendVoucher = function(email, name) {
     if(!email || email === 'undefined' || email === 'Chưa cập nhật') {
         showToast('Thất bại: Khách hàng ' + name + ' chưa có Email hợp lệ để nhận mã!');
@@ -204,6 +213,7 @@ window.sendVoucher = function(email, name) {
     showToast(`Đã gửi voucher ${voucherCode} cho ${name}.`);
 };
 
+// Ham toggleUserStatus: bat/tat logic tuong ung.
 window.toggleUserStatus = function(email, name) {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     
@@ -212,9 +222,9 @@ window.toggleUserStatus = function(email, name) {
     if(index > -1) {
         if(users[index].status === 'locked') {
             users[index].status = 'active';
-            showToast('Đã ân xá, khôi phục quyền truy cập cho: ' + users[index].name);
+            showToast('Đã mở khóa, khôi phục quyền truy cập cho: ' + users[index].name);
         } else {
-            const confirmLock = confirm('Báo động: Xác nhận trục xuất và khóa vĩnh viễn tài khoản của ' + users[index].name + ' khỏi hệ thống?');
+            const confirmLock = confirm('Báo động: Xác nhận khóa và khóa vĩnh viễn tài khoản của ' + users[index].name + ' khỏi hệ thống?');
             if(!confirmLock) return;
             users[index].status = 'locked';
             showToast('Đã tước quyền truy cập của: ' + users[index].name);

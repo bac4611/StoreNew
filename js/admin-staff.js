@@ -5,15 +5,17 @@
  */
 const mockStaffSeedVersion = 'dngear-staff-seed-v1';
 
+// Ham buildMockStaff: tao logic tuong ung.
 function buildMockStaff() {
     return [
-        { id: 'NV01', name: 'Nguyễn Quang Hải', gender: 'Nam', phone: '0987654321', email: 'hai@gunstore.com', role: 'Quản lý kho', salary: '15.000.000 đ' },
-        { id: 'NV02', name: 'Trần Thị Lan', gender: 'Nữ', phone: '0912345678', email: 'lan@gunstore.com', role: 'Bán hàng', salary: '12.500.000 đ' },
-        { id: 'NV03', name: 'Lê Minh Khoa', gender: 'Nam', phone: '0999888777', email: 'khoa@gunstore.com', role: 'Kế toán', salary: '13.000.000 đ' },
-        { id: 'NV04', name: 'Phạm Hữu Duy', gender: 'Nam', phone: '0933222111', email: 'duy@gunstore.com', role: 'Bảo vệ', salary: '8.800.000 đ' }
+        { id: 'NV01', name: 'Triệu Anh Khôi', gender: 'Nam', phone: '0987654321', email: 'hai@jewerly.com', role: 'Quản lý kho', salary: '15.000.000 đ' },
+        { id: 'NV02', name: 'Trần Thị Lan', gender: 'Nữ', phone: '0912345678', email: 'lan@jewerly.com', role: 'Bán hàng', salary: '12.500.000 đ' },
+        { id: 'NV03', name: 'Lê Minh Khoa', gender: 'Nam', phone: '0999888777', email: 'khoajewerly.com', role: 'Kế toán', salary: '13.000.000 đ' },
+        { id: 'NV04', name: 'Vũ việt vũ', gender: 'Nam', phone: '0933222111', email: 'duy@jewerly.com', role: 'Bảo vệ', salary: '8.800.000 đ' }
     ];
 }
 
+// Ham initMockStaff: khoi tao logic tuong ung.
 function initMockStaff() {
     let staff = JSON.parse(localStorage.getItem('staffData')) || [];
     if (!Array.isArray(staff)) staff = [];
@@ -39,6 +41,7 @@ function initMockStaff() {
 }
 initMockStaff();
 
+// Ham injectStaffModal: chen logic tuong ung.
 function injectStaffModal() {
     if(document.getElementById('adminStaffFormModal')) return;
     const container = document.createElement('div');
@@ -101,6 +104,7 @@ function injectStaffModal() {
 }
 injectStaffModal();
 
+// Ham renderAdminStaff: hien thi logic tuong ung.
 window.renderAdminStaff = function(keyword = '') {
     const staff = JSON.parse(localStorage.getItem('staffData')) || [];
 
@@ -142,10 +146,12 @@ window.renderAdminStaff = function(keyword = '') {
     });
 };
 
+// Ham searchAdminStaff: tim kiem logic tuong ung.
 window.searchAdminStaff = function(keyword) {
     renderAdminStaff(keyword);
 };
 
+// Ham deleteStaff: xoa logic tuong ung.
 window.deleteStaff = function(id, btnElement) {
     const confirmDelete = confirm('CẢNH BÁO: Xác nhận chấm dứt hợp đồng và xóa dữ liệu của nhân sự này?');
     if(confirmDelete) {
@@ -167,6 +173,7 @@ window.deleteStaff = function(id, btnElement) {
     }
 };
 
+// Ham openAddStaffForm: mo logic tuong ung.
 window.openAddStaffForm = function() {
     document.getElementById('adminStaffFormTitle').innerText = 'THÊM NHÂN SỰ MỚI';
     document.getElementById('formStaffSaveMode').value = 'add';
@@ -184,6 +191,7 @@ window.openAddStaffForm = function() {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham editStaff: chinh sua logic tuong ung.
 window.editStaff = function(id) {
     let staff = JSON.parse(localStorage.getItem('staffData')) || [];
     const p = staff.find(item => item.id === id);
@@ -205,11 +213,13 @@ window.editStaff = function(id) {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham closeStaffForm: dong logic tuong ung.
 window.closeStaffForm = function() {
     const modal = document.getElementById('adminStaffFormModal');
     if(modal) modal.classList.add('hide-menu');
 };
 
+// Ham saveStaff: luu logic tuong ung.
 window.saveStaff = function() {
     const mode = document.getElementById('formStaffSaveMode').value;
     const id = document.getElementById('formStaffId').value.trim();

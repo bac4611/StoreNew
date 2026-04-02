@@ -3,6 +3,7 @@
  * Purpose: Admin CRUD UI for product catalog (render, add/edit, delete).
  * Main entry points: renderAdminProductTable(), openAddProductForm(), saveProduct().
  */
+// Ham renderAdminProductTable: hien thi logic tuong ung.
 window.renderAdminProductTable = function(keyword = '', highlightId = '') {
     const tbody = document.getElementById('adminTableBody');
     if(!tbody) return;
@@ -45,10 +46,12 @@ window.renderAdminProductTable = function(keyword = '', highlightId = '') {
     }
 };
 
+// Ham searchAdminTable: tim kiem logic tuong ung.
 window.searchAdminTable = function(keyword) {
     renderAdminProductTable(keyword);
 };
 
+// Ham deleteWeapon: xoa logic tuong ung.
 window.deleteWeapon = function(id, btnElement) {
     const confirmDelete = confirm('Cảnh báo: Xác nhận tiêu hủy toàn bộ dữ liệu vũ khí này khỏi kho lưu trữ?');
     if(confirmDelete) {
@@ -84,6 +87,7 @@ window.deleteWeapon = function(id, btnElement) {
     }
 };
 
+// Ham toggleAdminFields: bat/tat logic tuong ung.
 window.toggleAdminFields = function() {
     const cat = document.getElementById('formCategory').value;
     const ammoGroup = document.getElementById('groupFormAmmo');
@@ -117,6 +121,7 @@ window.toggleAdminFields = function() {
     }
 };
 
+// Ham openAddProductForm: mo logic tuong ung.
 window.openAddProductForm = function() {
     document.getElementById('adminFormTitle').innerText = 'THÊM SẢN PHẨM MỚI';
     document.getElementById('formSaveMode').value = 'add';
@@ -146,6 +151,7 @@ window.openAddProductForm = function() {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham editWeapon: chinh sua logic tuong ung.
 window.editWeapon = function(id) {
     const p = dbProducts.find(item => item.id === id);
     if(!p) return;
@@ -178,11 +184,13 @@ window.editWeapon = function(id) {
     if(modal) modal.classList.remove('hide-menu');
 };
 
+// Ham closeAdminForm: dong logic tuong ung.
 window.closeAdminForm = function() {
     const modal = document.getElementById('adminFormModal');
     if(modal) modal.classList.add('hide-menu');
 };
 
+// Ham saveProduct: luu logic tuong ung.
 window.saveProduct = function() {
     const mode = document.getElementById('formSaveMode').value;
     const subcategory = document.getElementById('formCategory').value;
@@ -283,6 +291,7 @@ window.saveProduct = function() {
     }
 };
 
+// Ham deleteWeapon: xoa logic tuong ung.
 window.deleteWeapon = function(id, btnElement) {
     const confirmDelete = confirm('Xac nhan xoa san pham nay khoi danh muc?');
     if (!confirmDelete) return;
@@ -318,6 +327,7 @@ window.deleteWeapon = function(id, btnElement) {
     }, 300);
 };
 
+// Ham toggleAdminFields: bat/tat logic tuong ung.
 window.toggleAdminFields = function() {
     const cat = document.getElementById('formCategory').value;
     const ammoGroup = document.getElementById('groupFormAmmo');
@@ -349,6 +359,7 @@ window.toggleAdminFields = function() {
     if (accInput) accInput.placeholder = 'VD: Dinh da CZ, khac ten, charm trai tim...';
 };
 
+// Ham openAddProductForm: mo logic tuong ung.
 window.openAddProductForm = function() {
     document.getElementById('adminFormTitle').innerText = 'THEM SAN PHAM MOI';
     document.getElementById('formSaveMode').value = 'add';
@@ -378,6 +389,7 @@ window.openAddProductForm = function() {
     if (modal) modal.classList.remove('hide-menu');
 };
 
+// Ham saveProduct: luu logic tuong ung.
 window.saveProduct = function() {
     const mode = document.getElementById('formSaveMode').value;
     const subcategory = document.getElementById('formCategory').value;

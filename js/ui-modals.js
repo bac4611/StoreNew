@@ -3,6 +3,7 @@
  * Purpose: Inject common modal markup (detail/cart/admin) and close behavior.
  * Main entry points: injectModals(), registerModalDismiss().
  */
+// Ham injectModals: chen logic tuong ung.
 function injectModals() {
     if (document.getElementById('detailModal')) return;
 
@@ -210,6 +211,7 @@ function injectModals() {
     }
 }
 
+// Ham registerModalDismiss: xu ly dang ky logic tuong ung.
 function registerModalDismiss() {
     document.addEventListener('click', event => {
         const detailModal = document.getElementById('detailModal');
@@ -253,6 +255,7 @@ function registerModalDismiss() {
 injectModals();
 registerModalDismiss();
 
+// Ham applyJewelryCategoryLabels: ap dung logic tuong ung.
 function applyJewelryCategoryLabels() {
     const magLabel = document.querySelector('#rowMdlMag .info-label');
     const ammoLabel = document.querySelector('#rowMdlAmmo .info-label');

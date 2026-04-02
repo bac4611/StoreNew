@@ -36,6 +36,7 @@ const reportChartPalette = [
 let currentRevenueRange = '90d';
 const mockTransactionSeedVersion = 'dngear-transaction-seed-v1';
 
+// Ham createOrderItem: tao logic tuong ung.
 function createOrderItem(productId, quantity) {
     const product = dbProducts.find(item => item.id === productId);
     if (!product) return null;
@@ -49,10 +50,12 @@ function createOrderItem(productId, quantity) {
     };
 }
 
+// Ham calculateOrderTotal: tinh toan logic tuong ung.
 function calculateOrderTotal(items) {
     return items.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0);
 }
 
+// Ham buildSeedOrder: tao logic tuong ung.
 function buildSeedOrder(order) {
     const items = (order.items || []).map(item => createOrderItem(item.productId, item.quantity)).filter(Boolean);
     if (items.length === 0) return null;
@@ -64,6 +67,7 @@ function buildSeedOrder(order) {
     };
 }
 
+// Ham buildMockTransactions: tao logic tuong ung.
 function buildMockTransactions() {
     return [
         {
@@ -220,6 +224,7 @@ function buildMockTransactions() {
     ].map(buildSeedOrder).filter(Boolean);
 }
 
+// Ham normalizeStoredOrderItem: chuan hoa logic tuong ung.
 function normalizeStoredOrderItem(item) {
     if (!item) return null;
 
@@ -250,6 +255,7 @@ function normalizeStoredOrderItem(item) {
 }
 
 // Normalize order payloads so data from old versions does not break reports.
+// Ham normalizeStoredOrder: chuan hoa logic tuong ung.
 function normalizeStoredOrder(order) {
     if (!order) return null;
 
@@ -269,6 +275,7 @@ function normalizeStoredOrder(order) {
     };
 }
 
+// Ham normalizeTransactionCollection: chuan hoa logic tuong ung.
 function normalizeTransactionCollection(orders) {
     return (Array.isArray(orders) ? orders : [])
         .map(normalizeStoredOrder)
@@ -276,6 +283,7 @@ function normalizeTransactionCollection(orders) {
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
+// Ham initMockReports: khoi tao logic tuong ung.
 function initMockReports() {
     let transactions = normalizeTransactionCollection(JSON.parse(localStorage.getItem('transactionData')) || []);
     const seedOrders = buildMockTransactions();
@@ -297,15 +305,18 @@ function initMockReports() {
 }
 initMockReports();
 
+// Ham getTransactionData: lay logic tuong ung.
 function getTransactionData() {
     return normalizeTransactionCollection(JSON.parse(localStorage.getItem('transactionData')) || []);
 }
 
+// Ham syncPendingOrders: dong bo logic tuong ung.
 function syncPendingOrders(orders) {
     const pendingOrders = orders.filter(order => order.status === 'Chờ duyệt');
     localStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
 }
 
+// Ham saveTransactionData: luu logic tuong ung.
 function saveTransactionData(orders) {
     const normalizedOrders = normalizeTransactionCollection(orders);
     localStorage.setItem('transactionData', JSON.stringify(normalizedOrders));
@@ -323,20 +334,24 @@ function saveTransactionData(orders) {
 }
 
 // Utility formatters shared across transaction list + revenue charts.
+// Ham formatMoney: dinh dang logic tuong ung.
 function formatMoney(value) {
     return `${Number(value || 0).toLocaleString('vi-VN')}$`;
 }
 
+// Ham formatDateTime: dinh dang logic tuong ung.
 function formatDateTime(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return 'Chưa rõ thời gian';
     return date.toLocaleString('vi-VN');
 }
 
+// Ham countOrderUnits: dem logic tuong ung.
 function countOrderUnits(order) {
     return (order.items || []).reduce((sum, item) => sum + (item.quantity || 0), 0);
 }
 
+// Ham collectOrderKeywords: thu thap logic tuong ung.
 function collectOrderKeywords(order) {
     const itemNames = (order.items || []).map(item => item.name).join(' ');
     return [
@@ -353,6 +368,7 @@ function collectOrderKeywords(order) {
         .toLowerCase();
 }
 
+// Ham increaseCustomerSpent: tang logic tuong ung.
 function increaseCustomerSpent(order) {
     if (!order || order.status !== 'Hoàn tất') return;
 
@@ -385,6 +401,7 @@ function increaseCustomerSpent(order) {
     }
 }
 
+// Ham reserveInventoryForOrder: danh truoc logic tuong ung.
 function reserveInventoryForOrder(order) {
     const missingItems = [];
 
@@ -421,10 +438,12 @@ function reserveInventoryForOrder(order) {
     return { ok: true };
 }
 
+// Ham getCompletedTransactions: lay logic tuong ung.
 function getCompletedTransactions() {
     return getTransactionData().filter(order => order.status === 'Hoàn tất');
 }
 
+// Ham getRevenueRangeLabel: lay logic tuong ung.
 function getRevenueRangeLabel(range) {
     const map = {
         '7d': '7 ngày gần nhất',
@@ -437,11 +456,13 @@ function getRevenueRangeLabel(range) {
     return map[range] || map['90d'];
 }
 
+// Ham getRevenueRangeTrendTitle: lay logic tuong ung.
 function getRevenueRangeTrendTitle(range) {
     if (range === '7d' || range === '30d') return 'Biểu đồ doanh thu theo ngày';
     return 'Biểu đồ doanh thu theo tháng';
 }
 
+// Ham filterOrdersByRevenueRange: xu ly logic tuong ung.
 function filterOrdersByRevenueRange(orders, range) {
     if (range === 'all') return orders;
 
@@ -466,6 +487,7 @@ function filterOrdersByRevenueRange(orders, range) {
     });
 }
 
+// Ham buildCategoryRevenue: tao logic tuong ung.
 function buildCategoryRevenue(orders) {
     const totals = {};
 
@@ -481,6 +503,7 @@ function buildCategoryRevenue(orders) {
         .sort((a, b) => b.value - a.value);
 }
 
+// Ham buildCustomerRevenue: tao logic tuong ung.
 function buildCustomerRevenue(orders) {
     const totals = {};
 
@@ -502,6 +525,7 @@ function buildCustomerRevenue(orders) {
     return Object.values(totals).sort((a, b) => b.value - a.value);
 }
 
+// Ham buildMonthlyRevenue: tao logic tuong ung.
 function buildMonthlyRevenue(orders, monthCount = null) {
     const totals = {};
 
@@ -540,6 +564,7 @@ function buildMonthlyRevenue(orders, monthCount = null) {
         });
 }
 
+// Ham buildDailyRevenue: tao logic tuong ung.
 function buildDailyRevenue(orders, dayCount) {
     const totals = {};
 
@@ -569,6 +594,7 @@ function buildDailyRevenue(orders, dayCount) {
     return points;
 }
 
+// Ham buildRevenueTrendData: tao logic tuong ung.
 function buildRevenueTrendData(orders, range) {
     if (range === '7d') return buildDailyRevenue(orders, 7);
     if (range === '30d') return buildDailyRevenue(orders, 30);
@@ -577,10 +603,12 @@ function buildRevenueTrendData(orders, range) {
     return buildMonthlyRevenue(orders);
 }
 
+// Ham getChartGradient: lay logic tuong ung.
 function getChartGradient(index) {
     return reportChartPalette[index % reportChartPalette.length];
 }
 
+// Ham renderBarList: hien thi logic tuong ung.
 function renderBarList(containerId, items) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -604,6 +632,7 @@ function renderBarList(containerId, items) {
         .join('');
 }
 
+// Ham renderCustomerList: hien thi logic tuong ung.
 function renderCustomerList(containerId, customers) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -627,6 +656,7 @@ function renderCustomerList(containerId, customers) {
         .join('');
 }
 
+// Ham renderRevenueTrendChart: hien thi logic tuong ung.
 function renderRevenueTrendChart(containerId, items) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -657,6 +687,7 @@ function renderRevenueTrendChart(containerId, items) {
     `;
 }
 
+// Ham renderRevenueCategoryChart: hien thi logic tuong ung.
 function renderRevenueCategoryChart(containerId, items, totalRevenue) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -713,6 +744,7 @@ function renderRevenueCategoryChart(containerId, items, totalRevenue) {
     `;
 }
 
+// Ham renderRevenueCustomerChart: hien thi logic tuong ung.
 function renderRevenueCustomerChart(containerId, customers) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -744,12 +776,14 @@ function renderRevenueCustomerChart(containerId, customers) {
     }).join('');
 }
 
+// Ham changeRevenueRange: thay doi logic tuong ung.
 window.changeRevenueRange = function(range) {
     currentRevenueRange = range;
     renderAdminRevenueReport();
 };
 
 // Admin transaction table renderer (approval workflow starts here).
+// Ham renderAdminTransactionsReport: hien thi logic tuong ung.
 window.renderAdminTransactionsReport = function(keyword = '') {
     const orders = getTransactionData();
     const tbody = document.getElementById('transactionTableBody');
@@ -817,10 +851,12 @@ window.renderAdminTransactionsReport = function(keyword = '') {
         });
 };
 
+// Ham searchAdminTransactions: tim kiem logic tuong ung.
 window.searchAdminTransactions = function(keyword) {
     renderAdminTransactionsReport(keyword);
 };
 
+// Ham approveTransaction: phe duyet logic tuong ung.
 window.approveTransaction = function(orderId) {
     const orders = getTransactionData();
     const orderIndex = orders.findIndex(order => order.id === orderId);
@@ -854,6 +890,7 @@ window.approveTransaction = function(orderId) {
 };
 
 // Admin revenue dashboard renderer (KPIs + charts).
+// Ham renderAdminRevenueReport: hien thi logic tuong ung.
 window.renderAdminRevenueReport = function() {
     const completedOrders = getCompletedTransactions();
     const filteredOrders = filterOrdersByRevenueRange(completedOrders, currentRevenueRange);
@@ -892,6 +929,7 @@ window.renderAdminRevenueReport = function() {
 };
 
 // Checkout bridge called by cart.js to append pending order into report storage.
+// Ham recordCheckoutOrder: ghi nhan logic tuong ung.
 window.recordCheckoutOrder = function(cartItems) {
     if (!Array.isArray(cartItems) || cartItems.length === 0) return null;
 

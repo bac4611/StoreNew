@@ -4,6 +4,7 @@
  * Purpose: Inject and manage personal profile view for current user.
  * Main entry points: injectPersonalInfoView(), renderPersonalInfo(), savePersonalInfo().
  */
+// Ham injectPersonalInfoView: chen logic tuong ung.
 function injectPersonalInfoView() {
     if(document.querySelector('[id="view-personal-info"]')) return;
     const mainContent = document.querySelector('.main-content');
@@ -59,6 +60,7 @@ function injectPersonalInfoView() {
 injectPersonalInfoView();
 
 // CÁC HÀM XỬ LÝ LÕI
+// Ham renderPersonalInfo: hien thi logic tuong ung.
 window.renderPersonalInfo = function() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!currentUser) return;
@@ -116,6 +118,7 @@ window.renderPersonalInfo = function() {
     document.querySelector('[id="editProfilePassword"]').value = '';
 };
 
+// Ham savePersonalInfo: luu logic tuong ung.
 window.savePersonalInfo = function() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!currentUser) return;

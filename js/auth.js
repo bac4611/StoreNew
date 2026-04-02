@@ -3,6 +3,7 @@
  * Purpose: Login/register/forgot password flows and auth page state toggles.
  * Main entry points: login(), register(), handleForgotPass(), logout().
  */
+// Ham toggleForm: bat/tat logic tuong ung.
 function toggleForm(targetFormId) {
     const allForms = document.querySelectorAll('.auth-form-container');
     allForms.forEach(form => {
@@ -20,6 +21,7 @@ function toggleForm(targetFormId) {
     showAuthMessage('Điền thông tin phù hợp để tiếp tục thao tác.', 'info');
 }
 
+// Ham showAuthMessage: hien thi logic tuong ung.
 function showAuthMessage(message, type = 'info') {
     const feedback = document.getElementById('authFeedback');
     if (!feedback) {
@@ -39,6 +41,7 @@ function showAuthMessage(message, type = 'info') {
     }
 }
 
+// Ham login: xu ly dang nhap logic tuong ung.
 function login(event) {
     if(event) event.preventDefault();
 
@@ -75,6 +78,7 @@ function login(event) {
     return false;
 }
 
+// Ham register: xu ly dang ky logic tuong ung.
 function register(event) {
     if(event) event.preventDefault();
 
@@ -121,6 +125,7 @@ function register(event) {
     return false;
 }
 
+// Ham handleForgotPass: xu ly logic tuong ung.
 function handleForgotPass(event) {
     if(event) event.preventDefault();
     
@@ -148,6 +153,7 @@ function handleForgotPass(event) {
     return false;
 }
 
+// Ham logout: xu ly dang xuat logic tuong ung.
 function logout() {
     localStorage.removeItem('currentUser');
     window.location.href = 'home.html';

@@ -96,30 +96,36 @@ storeCategoryGroups.trangsucnam = ['trangsucnam', 'nhannam', 'daychuyennam', 'la
 storeCategoryGroups.trangsuccuoi = ['trangsuccuoi', 'nhancuoi', 'nhancapdoi', 'quatang'];
 storeCategoryGroups.phukien = ['phukien', 'hoptrangsuc', 'khanlau'];
 
+// Ham getStoreCategoryMeta: lay logic tuong ung.
 function getStoreCategoryMeta(category) {
     return storeCategoryMeta[category] || storeCategoryMeta.all;
 }
 
+// Ham getCurrentUserRole: lay logic tuong ung.
 function getCurrentUserRole() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     return currentUser ? currentUser.role : 'guest';
 }
 
+// Ham formatStorePrice: dinh dang logic tuong ung.
 function formatStorePrice(value) {
     return `${Number(value || 0).toLocaleString('vi-VN')}$`;
 }
 
+// Ham getStockPresentation: lay logic tuong ung.
 function getStockPresentation(stock) {
     if (stock <= 0) return { label: 'Het hang', className: 'out' };
     if (stock < 5) return { label: `Con ${stock}`, className: 'low' };
     return { label: 'San kho', className: 'ready' };
 }
 
+// Ham getCategoryKeys: lay logic tuong ung.
 function getCategoryKeys(category) {
     if (storeCategoryGroups[category]) return storeCategoryGroups[category];
     return [category];
 }
 
+// Ham matchesStoreCategory: kiem tra khop logic tuong ung.
 function matchesStoreCategory(product, category) {
     if (category === 'all') return true;
 
@@ -127,6 +133,7 @@ function matchesStoreCategory(product, category) {
     return categoryKeys.includes(product.category) || categoryKeys.includes(product.subcategory);
 }
 
+// Ham buildProductSearchText: tao logic tuong ung.
 function buildProductSearchText(product) {
     const categoryMeta = getStoreCategoryMeta(product.subcategory || product.category);
     return [
@@ -145,11 +152,13 @@ function buildProductSearchText(product) {
         .toLowerCase();
 }
 
+// Ham matchesStoreSearch: kiem tra khop logic tuong ung.
 function matchesStoreSearch(product, keyword) {
     if (!keyword) return true;
     return buildProductSearchText(product).includes(keyword);
 }
 
+// Ham sortStoreProducts: sap xep logic tuong ung.
 function sortStoreProducts(products) {
     const sorted = [...products];
 
@@ -180,6 +189,7 @@ function sortStoreProducts(products) {
     });
 }
 
+// Ham syncDropdownSelectedText: dong bo logic tuong ung.
 function syncDropdownSelectedText() {
     const textEl = document.getElementById('dropdownSelectedText');
     if (!textEl) return;
@@ -187,6 +197,7 @@ function syncDropdownSelectedText() {
     textEl.innerText = getStoreCategoryMeta(currentStoreCategory).label;
 }
 
+// Ham updateCatalogResultCopy: cap nhat logic tuong ung.
 function updateCatalogResultCopy(totalItems) {
     const countEl = document.getElementById('storeCatalogResultCount');
     if (!countEl) return;
@@ -196,6 +207,7 @@ function updateCatalogResultCopy(totalItems) {
     countEl.innerText = `${prefix} sản phẩm trong nhóm ${categoryMeta.label.toLowerCase()}.`;
 }
 
+// Ham buildCatalogEmptyState: tao logic tuong ung.
 function buildCatalogEmptyState() {
     const categoryMeta = getStoreCategoryMeta(currentStoreCategory);
     const searchNote = currentStoreSearch
@@ -214,6 +226,7 @@ function buildCatalogEmptyState() {
     `;
 }
 
+// Ham buildStoreProductCard: tao logic tuong ung.
 function buildStoreProductCard(product, options = {}) {
     const salePercent = Number(options.salePercent ?? product.salePercent ?? 0) || 0;
     const displayPrice = salePercent > 0 ? Math.round(product.price * (100 - salePercent) / 100) : product.price;
@@ -241,6 +254,7 @@ function buildStoreProductCard(product, options = {}) {
 window.createStoreProductCard = buildStoreProductCard;
 
 // Category shortcut buttons on home call this to jump + re-render catalog.
+// Ham focusStoreCategory: tap trung logic tuong ung.
 window.focusStoreCategory = function(category) {
     currentStoreCategory = category || 'all';
     syncDropdownSelectedText();
@@ -252,6 +266,7 @@ window.focusStoreCategory = function(category) {
     }
 };
 
+// Ham scrollStoreSection: cuon logic tuong ung.
 window.scrollStoreSection = function(id) {
     const section = document.getElementById(id);
     if (section) {
@@ -260,6 +275,7 @@ window.scrollStoreSection = function(id) {
 };
 
 // Home section: sale cards.
+// Ham renderSaleProducts: hien thi logic tuong ung.
 window.renderSaleProducts = function() {
     const container = document.getElementById('saleProductsGrid');
     if (!container) return;
@@ -282,6 +298,7 @@ window.renderSaleProducts = function() {
 };
 
 // Home section: promotion strip cards.
+// Ham renderStorePromoStrip: hien thi logic tuong ung.
 window.renderStorePromoStrip = function() {
     const container = document.getElementById('storePromoStrip');
     if (!container) return;
@@ -321,6 +338,7 @@ window.renderStorePromoStrip = function() {
 };
 
 // Home section: KPI counters for customer storefront.
+// Ham renderStoreInsights: hien thi logic tuong ung.
 window.renderStoreInsights = function() {
     const totalEl = document.getElementById('storeTotalCatalogCount');
     const dealEl = document.getElementById('storeHotDealCount');
@@ -357,6 +375,7 @@ window.renderStoreInsights = function() {
     if (pendingNavEl) pendingNavEl.innerText = pendingCount;
 }
 
+// Ham searchProducts: tim kiem logic tuong ung.
 function searchProducts(keyword) {
     currentStoreSearch = String(keyword || '').trim().toLowerCase();
     const input = document.getElementById('storeSearchInput');
@@ -373,6 +392,7 @@ function searchProducts(keyword) {
 window.searchProducts = searchProducts;
 
 // Main catalog renderer: filters by category + keyword, then paints product cards.
+// Ham renderProducts: hien thi logic tuong ung.
 function renderProducts(category = currentStoreCategory) {
     currentStoreCategory = category || 'all';
 
@@ -399,6 +419,7 @@ function renderProducts(category = currentStoreCategory) {
 window.renderProducts = renderProducts;
 
 // Product detail modal state fill + media fallback handling.
+// Ham showDetail: hien thi logic tuong ung.
 function showDetail(id) {
     const product = dbProducts.find(item => item.id === id);
     if (!product) return;
@@ -504,6 +525,7 @@ function showDetail(id) {
 
 window.showDetail = showDetail;
 
+// Ham closeModal: dong logic tuong ung.
 function closeModal() {
     const modal = document.getElementById('detailModal');
     if (modal) modal.classList.add('hide-menu');
@@ -512,6 +534,7 @@ function closeModal() {
 
 window.closeModal = closeModal;
 
+// Ham changeQty: thay doi logic tuong ung.
 function changeQty(amount) {
     const qtyInput = document.getElementById('buyQty');
     if (!qtyInput || !currentSelectedProduct) return;
@@ -529,6 +552,7 @@ function changeQty(amount) {
 
 window.changeQty = changeQty;
 
+// Ham toggleDropdown: bat/tat logic tuong ung.
 function toggleDropdown() {
     const menu = document.getElementById('dropdownMenu');
     if (menu) menu.classList.toggle('show');
@@ -544,6 +568,7 @@ window.addEventListener('click', event => {
     }
 });
 
+// Ham selectCategory: chon logic tuong ung.
 function selectCategory(categoryValue, displayText, event) {
     if (event) {
         event.stopPropagation();

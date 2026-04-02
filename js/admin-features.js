@@ -6,6 +6,7 @@
 const mockPromotionSeedVersion = 'dngear-promotion-seed-v1';
 
 // Khởi tạo danh sách bán chạy mặc định (Chỉ chạy 1 lần duy nhất khi bộ nhớ trống)
+// Ham initTopSelling: khoi tao logic tuong ung.
 function initTopSelling() {
     let stored = localStorage.getItem('topSellingIds');
     if (!stored) {
@@ -17,6 +18,7 @@ function initTopSelling() {
 initTopSelling();
 
 // Lấy danh sách đang được ghim
+// Ham getTopSellingIds: lay logic tuong ung.
 function getTopSellingIds() {
     let ids = [];
     try { ids = JSON.parse(localStorage.getItem('topSellingIds')) || []; } catch (e) { }
@@ -30,6 +32,7 @@ function getTopSellingIds() {
 }
 
 // Xử lý nút bấm Gỡ / Đưa vào banner
+// Ham toggleTopSellingCurrent: bat/tat logic tuong ung.
 function toggleTopSellingCurrent() {
     if (!currentSelectedProduct) return;
     const id = currentSelectedProduct.id;
@@ -54,6 +57,7 @@ function toggleTopSellingCurrent() {
     renderTopSelling();
 }
 
+// Ham updateTopSellingButtonUI: cap nhat logic tuong ung.
 function updateTopSellingButtonUI(id) {
     const btn = document.getElementById('btnToggleTopSelling');
     if (!btn) return;
@@ -68,6 +72,7 @@ function updateTopSellingButtonUI(id) {
     }
 }
 // Hàm này thay thế hoàn toàn hàm cũ trong app.js
+// Ham renderTopSelling: hien thi logic tuong ung.
 window.renderTopSelling = function () {
     const container = document.querySelector('.top-selling-grid');
     if (!container) return;
@@ -105,7 +110,8 @@ window.renderTopSelling = function () {
         container.appendChild(card);
     });
 };
-
+// khởi tạo, làm sách & cập nhật danh sách khuyến mãi trong db
+// Ham initMockPromotions: khoi tao logic tuong ung.
 function initMockPromotions() {
     let promotions = JSON.parse(localStorage.getItem('promotionData')) || [];
     const legacyCodes = ['NEWBIE50', 'VIPAMMO', 'FLASH20', 'FREESHIP'];
@@ -133,6 +139,7 @@ function initMockPromotions() {
 }
 initMockPromotions();
 
+// Ham buildMockPromotions: tao logic tuong ung.
 function buildMockPromotions() {
     return [
         {
@@ -198,10 +205,12 @@ function buildMockPromotions() {
     ];
 }
 
+// Ham getPromotionData: lay logic tuong ung.
 function getPromotionData() {
     return JSON.parse(localStorage.getItem('promotionData')) || [];
 }
 
+// Ham getNextPromotionId: lay logic tuong ung.
 function getNextPromotionId() {
     const promotions = getPromotionData();
     const maxIndex = promotions.reduce((max, promotion) => {
@@ -212,6 +221,7 @@ function getNextPromotionId() {
     return `KM${String(maxIndex + 1).padStart(2, '0')}`;
 }
 
+// Ham formatPromotionRankValue: dinh dang logic tuong ung.
 function formatPromotionRankValue(value, unit) {
     const numericValue = Number(value) || 0;
 
@@ -222,6 +232,7 @@ function formatPromotionRankValue(value, unit) {
     return `${numericValue}`;
 }
 
+// Ham injectPromotionModal: chen logic tuong ung.
 function injectPromotionModal() {
     if (document.getElementById('adminPromotionFormModal')) return;
 
@@ -298,6 +309,7 @@ function injectPromotionModal() {
 }
 injectPromotionModal();
 
+// Ham openAddPromotionForm: mo logic tuong ung.
 window.openAddPromotionForm = function () {
     document.getElementById('adminPromotionFormTitle').innerText = 'THÊM KHUYẾN MÃI';
     document.getElementById('formPromotionSaveMode').value = 'add';
@@ -317,11 +329,13 @@ window.openAddPromotionForm = function () {
     if (modal) modal.classList.remove('hide-menu');
 };
 
+// Ham closePromotionForm: dong logic tuong ung.
 window.closePromotionForm = function () {
     const modal = document.getElementById('adminPromotionFormModal');
     if (modal) modal.classList.add('hide-menu');
 };
 
+// Ham savePromotion: luu logic tuong ung.
 window.savePromotion = function () {
     const mode = document.getElementById('formPromotionSaveMode').value;
     const id = document.getElementById('formPromotionId').value.trim().toUpperCase();
@@ -384,7 +398,14 @@ window.savePromotion = function () {
     if (searchInput) searchInput.value = '';
     renderAdminPromotions('', id);
 };
+/* truyền vào promotions (mảng các chương trình khuyến mãi), hàm sẽ tính ra:
 
+có bao nhiêu mã đang áp dụng
+có bao nhiêu mã tạm dừng
+tổng số lượt dùng
+mã có giá trị ưu đãi lớn nhất
+có bao nhiêu sản phẩm đang được ghim ở khu nổi bật/banner */
+// Ham updatePromotionStats: cap nhat logic tuong ung.
 function updatePromotionStats(promotions) {
     const activeCount = promotions.filter(p => p.status === 'Đang áp dụng').length;
     const pausedCount = promotions.filter(p => p.status !== 'Đang áp dụng').length;
@@ -410,6 +431,7 @@ function updatePromotionStats(promotions) {
     if (bannerEl) bannerEl.innerText = bannerCount;
 }
 
+// Ham renderAdminPromotions: hien thi logic tuong ung.
 window.renderAdminPromotions = function (keyword = '', highlightId = '') {
     const promotions = getPromotionData();
     const tbody = document.getElementById('promotionTableBody');
@@ -462,10 +484,12 @@ window.renderAdminPromotions = function (keyword = '', highlightId = '') {
     });
 };
 
+// Ham searchAdminPromotions: tim kiem logic tuong ung.
 window.searchAdminPromotions = function (keyword) {
     renderAdminPromotions(keyword);
 };
 
+// Ham togglePromotionStatus: bat/tat logic tuong ung.
 window.togglePromotionStatus = function (id) {
     const promotions = getPromotionData();
     const promotionIndex = promotions.findIndex(p => p.id === id);

@@ -3,6 +3,7 @@
  * Purpose: Customer order history query/render + reorder action.
  * Main entry points: renderOrderHistory(), reorderFromHistory(), openStoreCatalogFromHistory().
  */
+// Ham getCurrentUserOrders: lay logic tuong ung.
 function getCurrentUserOrders() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (!currentUser || currentUser.role !== 'customer') return [];
@@ -20,6 +21,7 @@ function getCurrentUserOrders() {
         .sort((left, right) => new Date(right.createdAt) - new Date(left.createdAt));
 }
 
+// Ham formatOrderDate: dinh dang logic tuong ung.
 function formatOrderDate(value) {
     if (typeof formatDateTime === 'function') {
         return formatDateTime(value);
@@ -29,12 +31,14 @@ function formatOrderDate(value) {
     return Number.isNaN(date.getTime()) ? 'Chưa rõ thời gian' : date.toLocaleString('vi-VN');
 }
 
+// Ham buildOrderItemSummary: tao logic tuong ung.
 function buildOrderItemSummary(order) {
     return (order.items || [])
         .map(item => `${item.name} x${item.quantity}`)
         .join(', ');
 }
 
+// Ham buildOrderHistoryCard: tao logic tuong ung.
 function buildOrderHistoryCard(order) {
     const isPending = order.status === 'Chờ duyệt';
 
@@ -59,6 +63,7 @@ function buildOrderHistoryCard(order) {
     `;
 }
 
+// Ham openStoreCatalogFromHistory: mo logic tuong ung.
 window.openStoreCatalogFromHistory = function() {
     const homeNav = document.querySelector('.customer-only .nav-item');
     if (homeNav) {
@@ -70,6 +75,7 @@ window.openStoreCatalogFromHistory = function() {
     }
 };
 
+// Ham reorderFromHistory: dat lai logic tuong ung.
 window.reorderFromHistory = function(orderId) {
     const orders = getCurrentUserOrders();
     const order = orders.find(item => item.id === orderId);
@@ -106,6 +112,7 @@ window.reorderFromHistory = function(orderId) {
     showToast(skippedCount > 0 ? 'Không thể mua lại vì một số sản phẩm đã hết hàng hoặc đã bị gỡ.' : 'Không tìm thấy món hàng để mua lại.');
 };
 
+// Ham renderOrderHistory: hien thi logic tuong ung.
 window.renderOrderHistory = function() {
     const summaryTotalEl = document.getElementById('orderHistoryTotalCount');
     const summaryDoneEl = document.getElementById('orderHistoryDoneCount');
